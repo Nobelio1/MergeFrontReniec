@@ -1,4 +1,4 @@
-import {Result} from "../../../masters/models/result.model";
+import { Result } from '../../../masters/models/result.model';
 
 export class ValidarDatosIn {
   datosOficina: DatosOficina;
@@ -44,19 +44,28 @@ export class RegistroLibroOut extends Result {
 }
 
 export class RegistroLibroIn {
-  archivoSustento: Archivo;
-  codigoTipoArchivoSustento: string;
+  listArchivoSustento: Sustento[];
   email: string;
   celular: string;
   codigoModoRegistro: string;
   detalleSolicitud: DetalleSolicitudLibro[];
   constructor() {
-    this.archivoSustento = new Archivo();
-    this.codigoTipoArchivoSustento = '';
+    this.listArchivoSustento = new Array<Sustento>();
     this.email = '';
     this.celular = '';
     this.codigoModoRegistro = '';
     this.detalleSolicitud = new Array<DetalleSolicitudLibro>();
+  }
+}
+
+export class Sustento {
+  codigoNombre: string;
+  tipoCodigoNombre: string;
+  idArchivo?: string;
+  constructor() {
+    this.codigoNombre = '';
+    this.tipoCodigoNombre = '';
+    this.idArchivo = '';
   }
 }
 
@@ -88,3 +97,26 @@ export class DetalleSolicitudLibro {
     this.numeroUltimaActa = 0;
   }
 }
+
+//Creando modelo para nuevo servicio
+
+export class ConsultarPorDniOut extends Result {
+  data: Persona;
+  constructor() {
+    super();
+    this.data = new Persona();
+  }
+}
+
+export class Persona {
+  codigoOrec: string;
+  descripcionOrec: string;
+  estadoRegistrador: string;
+  constructor() {
+    this.codigoOrec = '';
+    this.descripcionOrec = '';
+    this.estadoRegistrador = '';
+  }
+}
+
+//Fin de la creacion

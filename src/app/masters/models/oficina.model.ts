@@ -1,4 +1,4 @@
-import {Result} from "./result.model";
+import { Result } from './result.model';
 
 export class OficinaOrecIn {
   codigoCentroPoblado: string;
@@ -17,7 +17,7 @@ export class OficinaOrecOut extends Result {
   data: OficinaOrec[];
   constructor() {
     super();
-    this.data = new Array<OficinaOrec>;
+    this.data = new Array<OficinaOrec>();
   }
 }
 
@@ -30,7 +30,6 @@ export class OficinaOrec {
   }
 }
 
-
 export class OficinaDetalleOut extends Result {
   data: OficinaDetalle;
   constructor() {
@@ -40,7 +39,7 @@ export class OficinaDetalleOut extends Result {
 }
 
 export class OficinaDetalle {
-  codigoOrec: string;
+  codigoOrec!: string;
   descripcionCentroPoblado: string;
   descripcionLocalLarga: string;
   nombreDepartamento: string;

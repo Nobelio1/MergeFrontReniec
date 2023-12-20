@@ -1,0 +1,363 @@
+<app-heading [title]="title"></app-heading>
+
+<div class="row mt-3 custom-padding-bottom">
+  <div class="col-12">
+    <mat-card>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-12">
+            <h3>Parámetros</h3>
+          </div>
+        </div>
+
+        <form [formGroup]="form">
+          <div class="row">
+            <div class="col-sm-12 col-md-3">
+              <app-options
+                #cboEstadoSolicitud
+                [label]="'Estado Solicitud'"
+                [options]="estadoSolicitud"
+                [select]="codigoEstado"
+                [optionSelect]="true"
+                [todosEstados]="true"
+                (selected)="setEstadoSolicitud($event)"
+              ></app-options>
+            </div>
+            <div class="col-sm-12 col-md-3">
+              <mat-label>Rango de fecha de búsqueda</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input
+                    matStartDate
+                    formControlName="fechaIni"
+                    placeholder="Desde"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="fechaFin"
+                    placeholder="Hasta"
+                  />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-calendar-day"
+                  ></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle
+                  matSuffix
+                  (click)="clearDate(['fechaIni', 'fechaFin'])"
+                  *ngIf="
+                    form.controls['fechaIni']?.value ||
+                    form.controls['fechaFin']?.value
+                  "
+                >
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-times"
+                  ></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-date-range-picker
+                  #picker
+                  color="accent"
+                ></mat-date-range-picker>
+
+                <mat-error *ngIf="form.get('fechaIni')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaIni")
+                }}</mat-error>
+                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaFin")
+                }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-12 col-md-3">
+              <app-options
+                #cboTipoRegistro
+                [label]="'Tipo de Solicitud'"
+                [options]="tipoRegistro"
+                [optionSelect]="!esAnalista()"
+                [select]="
+                  esAnalista() ? environment.TIPO_REGISTRO_LIBRO_ID : ''
+                "
+                (selected)="setTipoRegistro($event)"
+              ></app-options>
+            </div>
+            <div class="col-sm-12 col-md-3">
+              <app-options
+                #cboAnalista
+                [label]="'Analista Asignado'"
+                [options]="analistas"
+                [optionSelect]="!esAnalista()"
+                [select]="esAnalista() ? user!.dni : ''"
+                (selected)="setAnalista($event)"
+              ></app-options>
+            </div>
+          </div>
+          <!-- SELECION DE OFICINA -->
+          <div class="row">
+            <div class="col-sm-12 col-md-3">
+              <app-ubigeo
+                [type]="'DEP'"
+                [reset]="resetDep"
+                (ubigeoSelected)="getDep($event)"
+              ></app-ubigeo>
+            </div>
+            <div class="col-sm-12 col-md-3">
+              <app-ubigeo
+                [type]="'PRO'"
+                [idDepartamento]="form.controls['codigoDepartamento'].value"
+                (ubigeoSelected)="getPro($event)"
+              ></app-ubigeo>
+            </div>
+            <div class="col-sm-12 col-md-3">
+              <app-ubigeo
+                [type]="'DIS'"
+                [idDepartamento]="form.controls['codigoDepartamento'].value"
+                [idProvincia]="form.controls['codigoProvincia'].value"
+                (ubigeoSelected)="getDis($event)"
+              ></app-ubigeo>
+            </div>
+            <div class="col-sm-12 col-md-3">
+              <app-oficina-autorizada
+                #cboOficinaAutorizada
+                [idDepartamento]="form.controls['codigoDepartamento'].value"
+                [idProvincia]="form.controls['codigoProvincia'].value"
+                [idDistrito]="form.controls['codigoDistrito'].value"
+                (oficinaOrecSelected)="getOficinaAutorizada($event)"
+              ></app-oficina-autorizada>
+            </div>
+          </div>
+          <!-- Datos del solicitante -->
+          <div class="row">
+            <div class="col-sm-12 col-md-4">
+              <label>DNI Solicitante</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  formControlName="dniSolicitante"
+                  placeholder="Ingrese"
+                  autocomplete="off"
+                />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <label>Ape.Paterno Solicitante</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  formControlName="apellidoPaterno"
+                  placeholder="Ingrese"
+                  autocomplete="off"
+                />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <label>Ape.Materno Solicitante</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  formControlName="apellidoMaterno"
+                  placeholder="Ingrese"
+                  autocomplete="off"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+        <ng-container *ngIf="length >= 0">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 mt-3 d-flex justify-content-end">
+              <button
+                mat-flat-button
+                color="accent"
+                class="button-custom-search"
+                (click)="btnSearch()"
+              >
+                Generar Reporte
+              </button>
+              <button
+                mat-flat-button
+                color="accent"
+                class="button-custom-search ml-2 me-2"
+                (click)="exportarTodoXlsx()"
+              >
+                Exportar a Excel
+              </button>
+            </div>
+          </div>
+        </ng-container>
+        <div class="row">
+          <div class="col-12">
+            <h3>Resultado</h3>
+          </div>
+        </div>
+        <ng-container *ngIf="length <= 0">
+          <div class="row">
+            <div class="col-12 text-center">
+              <strong>{{ message }}</strong>
+            </div>
+          </div>
+        </ng-container>
+        <!-- Creando un tabla a mostrar -->
+        <!-- TODO: ESPERAR A CREACION DE SERVICIO -->
+        <ng-container *ngIf="length >= 1">
+          <div class="row">
+            <div class="col-12">
+              <div class="example-container">
+                <mat-table [dataSource]="dataResult">
+                  <ng-container matColumnDef="fechaRecepcion">
+                    <mat-header-cell *matHeaderCellDef>
+                      Fecha Recepción
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.fechaRecepcion }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="nroSolicitud">
+                    <mat-header-cell *matHeaderCellDef>
+                      N° Solicitud
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.numeroSolicitud }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="fechaAsignacion">
+                    <mat-header-cell *matHeaderCellDef>
+                      Fecha Asignanción
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.fechaAsignacion }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="departamento">
+                    <mat-header-cell *matHeaderCellDef>
+                      Departamento
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.nombreDepartamento }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="provincia">
+                    <mat-header-cell *matHeaderCellDef>
+                      Provincia
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.nombreProvincia }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="distrito">
+                    <mat-header-cell *matHeaderCellDef>
+                      Distrito
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.nombreDistrito }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="centroPoblado">
+                    <mat-header-cell *matHeaderCellDef>
+                      Centro Poblado
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.nombreCentroPoblado }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="dni">
+                    <mat-header-cell *matHeaderCellDef>DNI</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.numeroDocumento }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="registradorCivil">
+                    <mat-header-cell *matHeaderCellDef>
+                      Registrador Civil
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.preNombres }} {{ element?.primerApellido }}
+                      {{ element?.segundoApellido }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="fechaAtencion">
+                    <mat-header-cell *matHeaderCellDef>
+                      Fecha Atención
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.fechaAtencion }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="detalleRegistro">
+                    <mat-header-cell *matHeaderCellDef>
+                      Detalle Registro
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.detalleRegistro }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.email }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="celular">
+                    <mat-header-cell
+                      *matHeaderCellDef
+                      class="mat-column-estado"
+                    >
+                      Celular
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.celular }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="analista">
+                    <mat-header-cell
+                      *matHeaderCellDef
+                      class="mat-column-estado"
+                    >
+                      Analista
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.analistaAsignado }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="plazo">
+                    <mat-header-cell
+                      *matHeaderCellDef
+                      class="mat-column-estado"
+                    >
+                      Plazo
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element?.plazo }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                    [ngStyle]="getRowStyles(row)"
+                  ></mat-row>
+                </mat-table>
+              </div>
+              <mat-paginator
+                [pageSizeOptions]="[50, 100, 150, 200, 500]"
+                [length]="busquedaOut.totalElements"
+                [pageSize]="busquedaIn.size"
+                [pageIndex]="busquedaOut.page"
+                (page)="getListaBusqueda($event)"
+                showFirstLastButtons
+              >
+              </mat-paginator>
+            </div>
+          </div>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

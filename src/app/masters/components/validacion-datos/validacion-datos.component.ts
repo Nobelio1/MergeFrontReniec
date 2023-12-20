@@ -1,85 +1,85 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import {UtilService} from "../../../shared/services/util.service";
-import {SeguridadService} from "../../../shared/services/seguridad.service";
-import { DateAdapter } from '@angular/material/core';
+import { UtilService } from '../../../shared/services/util.service';
+import { SeguridadService } from '../../../shared/services/seguridad.service';
+import { SeguimientoBusquedaComponent } from '../../../core/seguimiento/components/seguimiento-busqueda/seguimiento-busqueda.component';
 
 @Component({
   selector: 'app-validacion-datos',
   templateUrl: './validacion-datos.component.html',
-  styleUrls: ['./validacion-datos.component.scss']
+  styleUrls: ['./validacion-datos.component.scss'],
 })
 export class ValidacionDatosComponent implements OnInit {
-
   environment: any;
 
   form!: FormGroup;
+  rangoFechaActivo: boolean = true;
 
   dateNow = new Date();
-
-  rangeMax: number = 30;
-  rangeMaxMessage: string = `El rango máximo es de ${this.rangeMax} días.`;
+  fechaActual = new Date();
 
   @Input() paraSeguimiento: boolean = false;
 
-  disabledRange: boolean = false;
-
-  constructor(private formBuilder: FormBuilder,
-              public utilService: UtilService,
-              private seguridadService: SeguridadService,
-              private dateAdapter: DateAdapter<Date>,
-              ) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    public utilService: UtilService,
+    private seguridadService: SeguridadService
+  ) {
+    // MAXIMO UN MES ATRAS
+    this.fechaActual.setMonth(this.fechaActual.getMonth() - 1);
+    this.form = this.formBuilder.group({
+      fechaInicio: [null, Validators.required],
+      fechaFin: [null, Validators.required],
+    });
+    this.form.controls['fechaInicio'].setValidators([
+      Validators.required,
+      this.fechaMaxValidator.bind(this),
+    ]);
+    // CAMBIA EL VALOR DE DISABLE
+    this.form.get('numeroSolicitud')?.valueChanges.subscribe(() => {
+      this.actualizarEstadoRangoFecha();
+    });
+  }
+  // ESCUCHA QUE INGRESA DATOS
+  actualizarEstadoRangoFecha() {
+    this.rangoFechaActivo = !this.form.get('numeroSolicitud')?.value;
+  }
+  fechaMaxValidator(control: any) {
+    return control.value &&
+      new Date(control.value).getTime() > this.fechaActual.getTime()
+      ? { maxDate: true }
+      : null;
+  }
 
   ngOnInit(): void {
     this.environment = environment;
 
-    // this.seguridadService.clearLocalStorage();
+    this.seguridadService.clearLocalStorage();
 
     this.form = this.formBuilder.group({
       nroDni: ['', [Validators.required]],
-      digito: ['', this.isExternal ? [Validators.required] : []],
-      fechaEmision: ['', this.isExternal ? [Validators.required] : []],
-      numeroSolicitud: ['', this.paraSeguimiento ? [Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[0-9]*$')] : []],
-      dateRange: this.formBuilder.group({
-        start: ['', []],
-        end: ['', []]
-      })
+      digito: ['', [Validators.required]],
+      fechaEmision: ['', [Validators.required]],
+      numeroSolicitud: [
+        '',
+        this.paraSeguimiento
+          ? [
+              Validators.required,
+              Validators.minLength(12),
+              Validators.maxLength(12),
+              Validators.pattern('^[0-9]*$'),
+            ]
+          : [],
+      ],
+      fechaInicio: [''],
+      fechaFin: [''],
     });
-
-    this.form.get('numeroSolicitud')?.valueChanges.subscribe(
-      (numeroSolicitud) => {
-        if(numeroSolicitud) {
-          this.disabledRange = true;
-          this.form.get('dateRange')?.get('start')?.setValue('');
-          this.form.get('dateRange')?.get('end')?.setValue('');
-        } else {
-          this.disabledRange = false;
-        }
-      }
-    );
-
   }
 
-  changeDateRange() {
-    const start = this.form.get('dateRange')?.get('start')?.value;
-    const end = this.form.get('dateRange')?.get('end')?.value;
-
-    if(start && end) {
-      const startMoreMax = this.dateAdapter.addCalendarDays(start, this.rangeMax);
-      if(startMoreMax < end) {
-        this.form.get('dateRange')?.get('end')?.setErrors({maxRange : true});
-      }    
-    }
+  clearDate(formControl: string[]) {
+    formControl.forEach((item) => {
+      this.form.controls[item].setValue('');
+    });
   }
-
-  clearRangeDate() {
-    this.form.get('dateRange')?.get('start')?.setValue('');
-    this.form.get('dateRange')?.get('end')?.setValue('');
-  }
-
-  get isExternal(): boolean {
-    return !this.seguridadService.getUserInternal();
-  }
-
 }

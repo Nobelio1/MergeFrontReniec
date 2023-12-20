@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-title>
+    {{ dataDialog.title }}
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="content">
+      <div class="row mt-3">
+        <div class="col-sm-12 col-md-2">Sustento</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-2">
+          <div class="custom-cell">
+            {{ dataDialog.detalle.archivoSustento.tipoArchivo }}
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="custom-cell">
+            <a
+              href="javascript:void(0);"
+              (click)="
+                download(
+                  dataDialog.detalle.archivoSustento.codigo,
+                  dataDialog.detalle.archivoSustento.nombreOriginal
+                )
+              "
+              >{{ dataDialog.detalle.archivoSustento.nombreOriginal }}</a
+            >
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <button tabindex="-1" mat-flat-button color="accent">Borrar</button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="cancel()">
+      Cerrar
+    </button>
+  </mat-card-actions>
+</mat-card>

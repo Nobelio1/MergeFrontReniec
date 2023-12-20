@@ -9,9 +9,6 @@ import {ComunidadComponent} from "../comunidad/comunidad.component";
 import {OficinaAuxiliarComponent} from "../oficina-auxiliar/oficina-auxiliar.component";
 import {OficinaAutorizadaComponent} from "../oficina-autorizada/oficina-autorizada.component";
 import {AgenciaComponent} from "../agencia/agencia.component";
-import { SeguridadService } from 'src/app/shared/services/seguridad.service';
-import { OficinaService } from '../../services/oficina.service';
-import { OficinaUbigeo } from 'src/app/core/firmas/models/firmas.model';
 
 @Component({
   selector: 'app-datos-oficina-autorizada',
@@ -33,10 +30,7 @@ export class DatosOficinaAutorizadaComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private spinner: NgxSpinnerService,
-              public utilService: UtilService,
-              private seguridadService: SeguridadService,
-              private oficinaService: OficinaService,
-              ) { }
+              public utilService: UtilService) { }
 
   ngOnInit(): void {
     this.environment = environment;
@@ -48,28 +42,6 @@ export class DatosOficinaAutorizadaComponent implements OnInit {
       centroPoblado: [''],
       oficinaAutorizada: ['', [Validators.required]],
     });
-
-    // if(this.isInternal && this.isAuthenticatedInternal) {
-    //   this.cargarOficinaAutorizada();
-    // }
-
-  }
-
-  cargarOficinaAutorizada() {
-    this.oficinaService.getOficinaDetalleUbigeo().subscribe(
-      {
-        next: (data: OficinaUbigeo) => {
-          console.log('dataaa = ', data);
-          if(data) {
-            this.form.controls['ubigeoDepartamento'].setValue(data.codigoDepartamento);
-            this.form.controls['ubigeoProvincia'].setValue(data.codigoProvincia);
-            this.form.controls['ubigeoDistrito'].setValue(data.codigoDistrito);
-            this.form.controls['centroPoblado'].setValue(data.codigoCentroPoblado);
-            this.form.controls['oficinaAutorizada'].setValue(data.codigoOrec);
-          }
-        }
-      }
-    );
   }
 
   getDep(ubigeo: string) {
@@ -99,14 +71,6 @@ export class DatosOficinaAutorizadaComponent implements OnInit {
 
   getOficinaAutorizada(idOficinaOrec: string) {
     this.form.controls['oficinaAutorizada'].setValue(idOficinaOrec);
-  }
-
-  get isInternal(): boolean {
-    return this.seguridadService.getUserInternal();
-  }
-
-  get isAuthenticatedInternal(): boolean {
-    return this.seguridadService.isAuthenticatedInternal();
   }
 
 }

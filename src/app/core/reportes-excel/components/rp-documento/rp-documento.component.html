@@ -1,0 +1,88 @@
+<mat-card>
+  <mat-card-title>
+    {{ dataDialog.title }}
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="content">
+      <ng-container>
+        <div class="row mt-2">
+          <div class="col-sm-12 col-md-2 mb-1">Sustento</div>
+        </div>
+        <div
+          class="row"
+          *ngFor="let archivo of dataDialog.detalle.archivoSustento"
+        >
+        <div class="col-sm-12 col-md-3">
+          <div class="custom-cell" *ngIf="archivo.tipoArchivo == '06'">
+            OFICIO
+          </div>
+          <div class="custom-cell" *ngIf="archivo.tipoArchivo == '15'">
+            OFICIO
+          </div>
+          <div class="custom-cell" *ngIf="archivo.tipoArchivo == '16'">
+            FORMATO SOLICITUD LIBROS
+          </div>
+          <div class="custom-cell" *ngIf="archivo.tipoArchivo == '02'">
+            RESOLUCION
+          </div>
+          <div class="custom-cell" *ngIf="archivo.tipoArchivo == '05'">
+            ACTA DE ASAMBLEA
+          </div>
+          <div class="custom-cell" *ngIf="archivo.tipoArchivo == '01'">
+            RESOLUCION
+          </div>
+        </div>
+          <div class="col-sm-12 col-md-5 mt-1">
+            <div class="custom-cell">
+              <a
+                href="javascript:void(0);"
+                (click)="download(archivo.codigo, archivo.nombreOriginal)"
+                >{{ archivo.nombreOriginal }}</a
+              >
+            </div>
+          </div>
+        </div>
+        <div *ngIf="dataDialog.tipo === environment.TIPO_REGISTRO_FIRMA">
+          <div class="row">
+            <div class="col-sm-12 col-md-2 mb-2 mt-2">Formato</div>
+          </div>
+          <div
+            class="mb-2 col-sm-12 col-md-10"
+            *ngFor="let file of dataDialog.detalle.detalleSolicitudFirma"
+          >
+            <div *ngIf="file.archivos.length > 0">
+              <div *ngFor="let item of file.archivos" class="row mb-2">
+                <div class="col-sm-12 col-md-6">
+                  <div class="custom-cell">{{ item.tipoArchivo }}</div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <div class="custom-cell">
+                    <a
+                      href="javascript:void(0);"
+                      (click)="download(item.codigo, item.nombreOriginal)"
+                      >{{ item.nombreOriginal }}</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="file.archivos <= 0">
+              <div class="row mb-2">
+                <div class="col-sm-12 col-md-6">
+                  <div class="custom-cell">No existe archivos adjuntos</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="cancel()">
+      Cerrar
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {ArticuloOut, LenguaOut, TipoArchivoOut} from "../models/maestro.model";
-import {OptionsOut} from "../models/option.model";
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import {
+  ArticuloOut,
+  LenguaOut,
+  TipoArchivoOut,
+} from '../models/maestro.model';
+import { OptionsOut } from '../models/option.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MaestrosService {
-
   private urlService = environment.API_MASTER;
   url = `${this.urlService}/maestros`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /*
   TIPO DE ARCHIVO
@@ -21,11 +24,19 @@ export class MaestrosService {
   03 TIPO DE ARCHIVO PARA SUSTENTO DE LIBRO
   * */
   listTipoArchivos(idTipoUso: string) {
-    return this.http.get<TipoArchivoOut>(`${this.url}/tipo-archivos?idTipoUso=${idTipoUso}`);
+    return this.http.get<TipoArchivoOut>(
+      `${this.url}/tipo-archivos?idTipoUso=${idTipoUso}`
+    );
   }
 
   listLenguas() {
     return this.http.get<LenguaOut>(`${this.url}/lenguas`);
+  }
+
+  listLenguasOficina(codigo: string) {
+    return this.http.get<LenguaOut>(
+      `${this.url}/lenguas-por-oficina/${codigo}`
+    );
   }
 
   listArticulos() {

@@ -1,4 +1,5 @@
-import {Result} from "../../../masters/models/result.model";
+import { Result } from '../../../masters/models/result.model';
+import { TipoSolicitudOut } from '../../firmas/models/tipo-solicitud.model';
 
 export class RecepcionarIn {
   solicitudes: string[];
@@ -18,13 +19,34 @@ export class RecepcionarOut extends Result {
 export class AsignarIn {
   codigoAnalista: string;
   solicitudes: string[];
+  dniCoordinador: string;
   constructor() {
     this.codigoAnalista = '';
+    this.dniCoordinador = '';
     this.solicitudes = new Array<string>();
   }
 }
 
 export class AsignarOut extends Result {
+  data: string;
+  constructor() {
+    super();
+    this.data = '';
+  }
+}
+
+export class ReasignarIn {
+  codigoAnalista: string;
+  solicitudes: string[];
+  dniCoordinador: string;
+  constructor() {
+    this.codigoAnalista = '';
+    this.dniCoordinador = '';
+    this.solicitudes = new Array<string>();
+  }
+}
+
+export class ReasignarOut extends Result {
   data: string;
   constructor() {
     super();
@@ -52,12 +74,10 @@ export class ArchivoSustento {
   codigo: string;
   nombreOriginal: string;
   tipoArchivo: string;
-  idTipoArchivo: string;
   constructor() {
     this.codigo = '';
     this.nombreOriginal = '';
     this.tipoArchivo = '';
-    this.idTipoArchivo = '';
   }
 }
 
@@ -66,13 +86,20 @@ export class Detalle {
   codigoOrec: string;
   descripcionOrecLarga: string;
   ubigeo: string;
-  idSolicitud: number;
   constructor() {
     this.archivoSustento = new ArchivoSustento();
     this.codigoOrec = '';
     this.descripcionOrecLarga = '';
     this.ubigeo = '';
-    this.idSolicitud = 0;
+  }
+}
+
+export class Detalle2 {
+  archivoSustento: ArchivoSustento;
+  ubigeo: string;
+  constructor() {
+    this.archivoSustento = new ArchivoSustento();
+    this.ubigeo = '';
   }
 }
 
@@ -97,11 +124,11 @@ export class DetalleSolicitudLibro {
   }
 }
 
-export class DetalleFirma extends Detalle {
-  detalleSolicitudLibro: DetalleSolicitudFirma[];
+export class DetalleFirma extends Detalle2 {
+  detalleSolicitudFirma: DetalleSolicitudFirma[];
   constructor() {
     super();
-    this.detalleSolicitudLibro = new Array<DetalleSolicitudFirma>();
+    this.detalleSolicitudFirma = new Array<DetalleSolicitudFirma>();
   }
 }
 
@@ -137,48 +164,4 @@ export class Archivos {
     this.nombreOriginal = '';
     this.tipoArchivo = '';
   }
-}
-
-export class EliminarSolicitudIn {
-  numeroSolicitud: string;
-  constructor() {
-    this.numeroSolicitud = '';
-  }
-}
-
-export class EliminarSolicitudOut extends Result {
-  data: boolean;
-  constructor() {
-    super();
-    this.data = true;
-  }
-}
-
-export interface UpdateSolicitudIn {
-  idSolicitud: number;
-  idTipoArchivoSustento: string;
-  idArchivoSustento: string;
-  listaDetalleFirma?: UpdateDetailFirma[];  
-  listaDetalleLibro?: UpdateDetailLibro[];
-}
-export interface UpdateDetailFirma {
-  idDetalleSolicitud: number;
-  celular: string;
-  email: string;
-  detalleArchivo: UpdateDetailFileFirma[];
-}
-
-export interface UpdateDetailFileFirma {
-  idDetalleSolicitud : number;
-  codigoNombre: string;  
-  codigoTipoArchivo: string;  
-  operacion: string;
-}
-
-export interface UpdateDetailLibro {
-  idDetalleSolLibro: number;
-  codigoArticulo: string;
-  codigoLengua: string;
-  cantidad: number;
-  numeroUltimaActa: string;
 }

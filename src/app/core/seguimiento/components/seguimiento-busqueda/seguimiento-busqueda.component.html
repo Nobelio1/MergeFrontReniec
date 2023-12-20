@@ -1,9 +1,7 @@
 <div class="row">
   <div class="col-12">
-
     <mat-card>
       <mat-card-content>
-
         <div class="row">
           <div class="col-12">
             <h3>Búsqueda de Solicitudes</h3>
@@ -11,13 +9,16 @@
         </div>
 
         <form [formGroup]="form">
-
           <div class="row">
-
             <div class="col-sm-12 col-md-4">
               <label>Nro. Solicitud</label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput formControlName="numeroSolicitud" placeholder="Ingrese" autocomplete="off">
+                <input
+                  matInput
+                  formControlName="numeroSolicitud"
+                  placeholder="Ingrese"
+                  autocomplete="off"
+                />
               </mat-form-field>
             </div>
 
@@ -25,31 +26,74 @@
               <mat-label>Rango de fecha</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicio" placeholder="Desde" (dateChange)="changeDateRange()">
-                  <input matEndDate formControlName="fechaFin" placeholder="Hasta" (dateChange)="changeDateRange()">
+                  <input
+                    matStartDate
+                    formControlName="fechaInicio"
+                    placeholder="Desde"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="fechaFin"
+                    placeholder="Hasta"
+                  />
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker">
-                  <mat-icon matDatepickerToggleIcon fontSet="fas" fontIcon="fa-calendar-day"></mat-icon>
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-calendar-day"
+                  ></mat-icon>
                 </mat-datepicker-toggle>
-                <mat-datepicker-toggle matSuffix (click)="clearDate(['fechaInicio', 'fechaFin'])" *ngIf="form.controls['fechaInicio']?.value || form.controls['fechaFin']?.value">
-                  <mat-icon matDatepickerToggleIcon fontSet="fas" fontIcon="fa-times"></mat-icon>
+                <mat-datepicker-toggle
+                  matSuffix
+                  (click)="clearDate(['fechaInicio', 'fechaFin'])"
+                  *ngIf="
+                    form.controls['fechaInicio']?.value ||
+                    form.controls['fechaFin']?.value
+                  "
+                >
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-times"
+                  ></mat-icon>
                 </mat-datepicker-toggle>
-                <mat-date-range-picker #picker color="accent"></mat-date-range-picker>
-                <mat-error *ngIf="form.get('fechaFin')?.hasError('maxRange')"> {{ rangeMaxMessage }} </mat-error>
-                <!-- <mat-error *ngIf="form.get('fechaInicio')?.invalid">{{utilService.getErrorMessage(form,'fechaInicio')}}</mat-error>
-                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{utilService.getErrorMessage(form,'fechaFin')}}</mat-error> -->
+                <mat-date-range-picker
+                  #picker
+                  color="accent"
+                ></mat-date-range-picker>
+
+                <mat-error *ngIf="form.get('fechaInicio')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaInicio")
+                }}</mat-error>
+                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaFin")
+                }}</mat-error>
               </mat-form-field>
             </div>
 
             <div class="col-sm-12 col-md-4 custom-search-buttons">
-              <button mat-flat-button color="accent" class="button-custom-search" (click)="btnSearch()" [disabled]="form.invalid">Buscar</button>
-              <button mat-stroked-button color="accent" class="button-custom-search ml-2" (click)="btnClean()">Limpiar</button>
+              <button
+                mat-flat-button
+                color="accent"
+                class="button-custom-search"
+                (click)="btnSearch()"
+              >
+                Buscar
+              </button>
+              <button
+                mat-stroked-button
+                color="accent"
+                class="button-custom-search ml-2"
+                (click)="btnClean()"
+              >
+                Limpiar
+              </button>
             </div>
-
           </div>
-
         </form>
 
+        <!-- TABLA   -->
         <div class="row">
           <div class="col-12">
             <h3>Resultado</h3>
@@ -59,7 +103,7 @@
         <ng-container *ngIf="length <= 0">
           <div class="row">
             <div class="col-12 text-center">
-              <strong>{{message}}</strong>
+              <strong>{{ message }}</strong>
             </div>
           </div>
         </ng-container>
@@ -67,59 +111,114 @@
         <ng-container *ngIf="length >= 1">
           <div class="row">
             <div class="col-12">
-
               <mat-table [dataSource]="dataResult">
                 <ng-container matColumnDef="nroSolicitud">
-                  <mat-header-cell *matHeaderCellDef> N° Solicitud </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{ element?.numeroSolicitud }} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    N° Solicitud
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.numeroSolicitud }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="fechaRegistro">
-                  <mat-header-cell *matHeaderCellDef> Fecha Trámite </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.fechaSolicitud}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Trámite
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaSolicitud }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="tipoRegistro">
-                  <mat-header-cell *matHeaderCellDef> Tipo Registro </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.tipoRegistro}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Tipo Registro
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.tipoRegistro }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="estado">
-                  <mat-header-cell *matHeaderCellDef> Estado Documento </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.estadoSolicitud}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Estado Documento
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.estadoSolicitud }}
+                  </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="docRegistrado">
-                  <mat-header-cell *matHeaderCellDef> Doc. Registado </mat-header-cell>
+                <ng-container
+                  matColumnDef="docRegistrado"
+                  *ngFor="let item of dataDialog.detalle.detalleSolicitudFirma"
+                >
+                  <mat-header-cell *matHeaderCellDef>
+                    Doc. Registado
+                  </mat-header-cell>
+                  <!-- BOTON -->
                   <mat-cell *matCellDef="let element">
-                    <button *ngIf="element.codigoArchivoSustento" mat-flat-button color="accent" (click)="btnDownloadFile(element.codigoArchivoSustento)">Descargar</button>
+                    <button
+                      *ngIf="element.codigoArchivoSustento"
+                      mat-flat-button
+                      color="accent"
+                      (click)="btnViewFiles(item.archivos)"
+                    >
+                      Ver
+                    </button>
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="docRespuesta">
-                  <mat-header-cell *matHeaderCellDef> Ver Doc. Respuesta </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Ver Doc. Respuesta
+                  </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <button *ngIf="!element.codigoArchivoRespuesta && element.estadoSolicitud === environment.TIPO_ATENDIDO" mat-flat-button color="accent" (click)="btnVerArchivosRespuesta(element.numeroSolicitud)">Ver Doc.</button>
-                    <button *ngIf="element.codigoArchivoRespuesta && element.estadoSolicitud === environment.TIPO_ATENDIDO" mat-flat-button color="accent" (click)="btnDownloadFile(element.codigoArchivoRespuesta)">Ver Doc.</button>
+                    <button
+                      *ngIf="
+                        !element.codigoArchivoRespuesta &&
+                        element.estadoSolicitud === environment.TIPO_ATENDIDO
+                      "
+                      mat-flat-button
+                      color="accent"
+                      (click)="btnVerArchivos(element.numeroSolicitud)"
+                    >
+                      Ver Doc.
+                    </button>
+                    <button
+                      *ngIf="
+                        element.codigoArchivoRespuesta &&
+                        element.estadoSolicitud === environment.TIPO_ATENDIDO
+                      "
+                      mat-flat-button
+                      color="accent"
+                      (click)="btnDownloadFile(element.codigoArchivoRespuesta)"
+                    >
+                      Ver Doc.
+                    </button>
                   </mat-cell>
                 </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns; let odd = odd;" [ngClass]="{gray: odd}"></mat-row>
+                <mat-header-row
+                  *matHeaderRowDef="displayedColumns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: displayedColumns; let odd = odd"
+                  [ngClass]="{ gray: odd }"
+                ></mat-row>
               </mat-table>
-              <mat-paginator [pageSizeOptions]="[10, 20]"
-                             [length]="busquedaOut.totalElements"
-                             [pageSize]="busquedaOut.size"
-                             [pageIndex]="busquedaOut.page"
-                             (page)="getLista($event)"
-                             showFirstLastButtons>
+              <mat-paginator
+                [pageSizeOptions]="[10, 20]"
+                [length]="busquedaOut.totalElements"
+                [pageSize]="busquedaOut.size"
+                [pageIndex]="busquedaOut.page"
+                (page)="getLista($event)"
+                showFirstLastButtons
+              >
               </mat-paginator>
             </div>
           </div>
         </ng-container>
-
       </mat-card-content>
     </mat-card>
-
   </div>
 </div>

@@ -2,10 +2,8 @@
 
 <div class="row mt-3 custom-padding-bottom">
   <div class="col-12">
-
     <mat-card>
       <mat-card-content>
-
         <div class="row">
           <div class="col-12">
             <h3>Búsqueda de Solicitudes</h3>
@@ -13,101 +11,163 @@
         </div>
 
         <form [formGroup]="form">
-
           <div class="row">
-
             <div class="col-sm-12 col-md-2">
               <label>Nro. Solicitud</label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput formControlName="numeroSolicitud" placeholder="Ingrese" autocomplete="off">
+                <input
+                  matInput
+                  formControlName="numeroSolicitud"
+                  placeholder="Ingrese"
+                  autocomplete="off"
+                />
               </mat-form-field>
             </div>
-
             <div class="col-sm-12 col-md-3">
-              <app-options #cboEstadoSolicitud
-                           [label]="'Estado Solicitud'"
-                           [options]="estadoSolicitud"
-                           [select]="codigoEstado"
-                           [optionSelect]="false"
-                           (selected)="setEstadoSolicitud($event)"></app-options>
+              <app-options
+                #cboEstadoSolicitud
+                [label]="'Estado Solicitud'"
+                [options]="estadoSolicitud"
+                [select]="codigoEstado"
+                [optionSelect]="true"
+                [todosEstados]="false"
+                (selected)="setEstadoSolicitud($event)"
+              ></app-options>
             </div>
 
             <div class="col-sm-12 col-md-4">
               <mat-label>Rango de fecha de búsqueda</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaIni" placeholder="Desde">
-                  <input matEndDate formControlName="fechaFin" placeholder="Hasta">
+                  <input
+                    matStartDate
+                    formControlName="fechaIni"
+                    placeholder="Desde"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="fechaFin"
+                    placeholder="Hasta"
+                  />
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker">
-                  <mat-icon matDatepickerToggleIcon fontSet="fas" fontIcon="fa-calendar-day"></mat-icon>
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-calendar-day"
+                  ></mat-icon>
                 </mat-datepicker-toggle>
-                <mat-datepicker-toggle matSuffix (click)="clearDate(['fechaIni', 'fechaFin'])" *ngIf="form.controls['fechaIni']?.value || form.controls['fechaFin']?.value">
-                  <mat-icon matDatepickerToggleIcon fontSet="fas" fontIcon="fa-times"></mat-icon>
+                <mat-datepicker-toggle
+                  matSuffix
+                  (click)="clearDate(['fechaIni', 'fechaFin'])"
+                  *ngIf="
+                    form.controls['fechaIni']?.value ||
+                    form.controls['fechaFin']?.value
+                  "
+                >
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-times"
+                  ></mat-icon>
                 </mat-datepicker-toggle>
-                <mat-date-range-picker #picker color="accent"></mat-date-range-picker>
+                <mat-date-range-picker
+                  #picker
+                  color="accent"
+                ></mat-date-range-picker>
 
-                <mat-error *ngIf="form.get('fechaIni')?.invalid">{{utilService.getErrorMessage(form,'fechaIni')}}</mat-error>
-                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{utilService.getErrorMessage(form,'fechaFin')}}</mat-error>
+                <mat-error *ngIf="form.get('fechaIni')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaIni")
+                }}</mat-error>
+                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaFin")
+                }}</mat-error>
               </mat-form-field>
             </div>
 
             <div class="col-sm-12 col-md-3">
-              <app-options #cboTipoRegistro
-                           [label]="'Tipo de Registro'"
-                           [options]="tipoRegistro"
-                           [optionSelect]="!esAnalista()"
-                           [select]="esAnalista() ? environment.TIPO_REGISTRO_LIBRO_ID : ''"
-                           (selected)="setTipoRegistro($event)"></app-options>
+              <app-options
+                #cboTipoRegistro
+                [label]="'Tipo de Registro'"
+                [options]="tipoRegistro"
+                [optionSelect]="!esAnalista()"
+                [select]="
+                  esAnalista() ? environment.TIPO_REGISTRO_LIBRO_ID : ''
+                "
+                (selected)="setTipoRegistro($event)"
+              ></app-options>
             </div>
-
           </div>
 
           <div class="row">
             <div class="col-sm-12 col-md-4">
-              <app-ubigeo [type]="'DEP'"
-                          [reset]="resetDep"
-                          (ubigeoSelected)="getDep($event)"></app-ubigeo>
+              <app-ubigeo
+                [type]="'DEP'"
+                [reset]="resetDep"
+                (ubigeoSelected)="getDep($event)"
+              ></app-ubigeo>
             </div>
 
             <div class="col-sm-12 col-md-4">
-              <app-ubigeo [type]="'PRO'"
-                          [idDepartamento]="form.controls['codigoDepartamento'].value"
-                          (ubigeoSelected)="getPro($event)"></app-ubigeo>
+              <app-ubigeo
+                [type]="'PRO'"
+                [idDepartamento]="form.controls['codigoDepartamento'].value"
+                (ubigeoSelected)="getPro($event)"
+              ></app-ubigeo>
             </div>
 
             <div class="col-sm-12 col-md-4">
-              <app-ubigeo [type]="'DIS'"
-                          [idDepartamento]="form.controls['codigoDepartamento'].value"
-                          [idProvincia]="form.controls['codigoProvincia'].value"
-                          (ubigeoSelected)="getDis($event)"></app-ubigeo>
+              <app-ubigeo
+                [type]="'DIS'"
+                [idDepartamento]="form.controls['codigoDepartamento'].value"
+                [idProvincia]="form.controls['codigoProvincia'].value"
+                (ubigeoSelected)="getDis($event)"
+              ></app-ubigeo>
             </div>
           </div>
 
           <div class="row">
             <div class="col-sm-12 col-md-5">
-              <app-oficina-autorizada #cboOficinaAutorizada
-                                      [idDepartamento]="form.controls['codigoDepartamento'].value"
-                                      [idProvincia]="form.controls['codigoProvincia'].value"
-                                      [idDistrito]="form.controls['codigoDistrito'].value"
-                                      (oficinaOrecSelected)="getOficinaAutorizada($event)"></app-oficina-autorizada>
+              <app-oficina-autorizada
+                #cboOficinaAutorizada
+                [idDepartamento]="form.controls['codigoDepartamento'].value"
+                [idProvincia]="form.controls['codigoProvincia'].value"
+                [idDistrito]="form.controls['codigoDistrito'].value"
+                (oficinaOrecSelected)="getOficinaAutorizada($event)"
+              ></app-oficina-autorizada>
             </div>
 
             <div class="col-sm-12 col-md-5">
-              <app-options #cboAnalista
-                           [label]="'Analista Asignado'"
-                           [options]="analistas"
-                           [optionSelect]="!esAnalista()"
-                           [select]="esAnalista() ? user!.dni : ''"
-                           (selected)="setAnalista($event)"></app-options>
+              <app-options
+                #cboAnalista
+                [label]="'Analista Asignado'"
+                [options]="analistas"
+                [optionSelect]="!esAnalista()"
+                [select]="esAnalista() ? user!.dni : ''"
+                (selected)="setAnalista($event)"
+              ></app-options>
             </div>
 
+            <!-- BUSCAR -->
             <div class="col-sm-12 col-md-2 custom-search-buttons">
-              <button mat-flat-button color="accent" class="button-custom-search" (click)="btnSearch()">Buscar</button>
-              <button mat-stroked-button color="accent" class="button-custom-search ml-2" (click)="btnClean()">Limpiar</button>
+              <button
+                mat-flat-button
+                color="accent"
+                class="button-custom-search"
+                (click)="btnSearch()"
+              >
+                Buscar
+              </button>
+              <button
+                mat-stroked-button
+                color="accent"
+                class="button-custom-search ml-2"
+                (click)="btnClean()"
+              >
+                Limpiar
+              </button>
             </div>
           </div>
-
         </form>
 
         <div class="row">
@@ -119,7 +179,7 @@
         <ng-container *ngIf="length <= 0">
           <div class="row">
             <div class="col-12 text-center">
-              <strong>{{message}}</strong>
+              <strong>{{ message }}</strong>
             </div>
           </div>
         </ng-container>
@@ -127,66 +187,100 @@
         <ng-container *ngIf="length >= 1">
           <div class="row">
             <div class="col-12">
-
               <mat-table [dataSource]="dataResult">
                 <ng-container matColumnDef="nroSolicitud">
-                  <mat-header-cell *matHeaderCellDef> N° Solicitud </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{ element?.numeroSolicitud }} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    N° Solicitud
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.numeroSolicitud }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="fechaRegistro">
-                  <mat-header-cell *matHeaderCellDef> Fecha Trámite </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.fechaSolicitud}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Trámite
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaSolicitud }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="tipoRegistro">
-                  <mat-header-cell *matHeaderCellDef> Tipo Registro </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.tipoRegistro}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Tipo Registro
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.tipoRegistro }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="oficinaAutorizada">
-                  <mat-header-cell *matHeaderCellDef> Oficina Autorizada </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.oficinaAutorizada}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Oficina Autorizada
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.oficinaAutorizada }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="fechaRecepcion">
-                  <mat-header-cell *matHeaderCellDef> Fecha Recepción </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.fechaRecepcion}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Recepción
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaRecepcion }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="fechaAsignacion">
-                  <mat-header-cell *matHeaderCellDef> Fecha Asignación </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.fechaAsignacion}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Asignación
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaAsignacion }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="fechaAtencion">
-                  <mat-header-cell *matHeaderCellDef> Fecha Atención </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.fechaAtencion}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Atención
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaAtencion }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="analistaAsignado">
-                  <mat-header-cell *matHeaderCellDef> Analista Asignado </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.analistaAsignado}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef>
+                    Analista Asignado
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.analistaAsignado }}
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="estado">
                   <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element?.estadoSolicitud}} </mat-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.estadoSolicitud }}
+                  </mat-cell>
                 </ng-container>
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
                   <mat-header-cell *matHeaderCellDef>
-<!--                    <mat-checkbox (change)="$event ? toggleAllRows() : null"-->
-<!--                                  [checked]="selection.hasValue() && isAllSelected()"-->
-<!--                                  [indeterminate]="selection.hasValue() && !isAllSelected()">-->
-<!--                    </mat-checkbox>-->
+                    <!--                    <mat-checkbox (change)="$event ? toggleAllRows() : null"-->
+                    <!--                                  [checked]="selection.hasValue() && isAllSelected()"-->
+                    <!--                                  [indeterminate]="selection.hasValue() && !isAllSelected()">-->
+                    <!--                    </mat-checkbox>-->
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row; let i = index;">
-                    <mat-checkbox (click)="$event.stopPropagation()"
-                                  (change)="$event ? selection.toggle(row) : null"
-                                  [disabled]="row.estadoSolicitud === environment.TIPO_ASIGNADO || row.estadoSolicitud === environment.TIPO_ATENDIDO"
-                                  [checked]="selection.isSelected(row)">
+                  <mat-cell *matCellDef="let row; let i = index">
+                    <mat-checkbox
+                      (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                    >
                     </mat-checkbox>
                   </mat-cell>
                 </ng-container>
@@ -194,57 +288,93 @@
                 <ng-container matColumnDef="acciones">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <button tabindex="-1" mat-icon-button color="accent" title="Atender"
-                            [disabled]="element.estadoSolicitud !== environment.TIPO_ASIGNADO || element.tipoRegistro !== environment.TIPO_REGISTRO_LIBRO"
-                            (click)="btnAtender(element)">
-                      <mat-icon fontSet="fas" fontIcon="fa-laptop-file"></mat-icon>
+                    <button
+                      tabindex="-1"
+                      mat-icon-button
+                      color="accent"
+                      title="Atender"
+                      [disabled]="
+                        element.estadoSolicitud !== environment.TIPO_ASIGNADO ||
+                        element.tipoRegistro !== environment.TIPO_REGISTRO_LIBRO
+                      "
+                      (click)="btnAtender(element)"
+                    >
+                      <mat-icon
+                        fontSet="fas"
+                        fontIcon="fa-laptop-file"
+                      ></mat-icon>
                       <span class="text-button-table">Atender</span>
                     </button>
-                    <button tabindex="-1" mat-icon-button color="accent" title="Ver Detalle"
-                            (click)="btnView(element)">
+                    <button
+                      tabindex="-1"
+                      mat-icon-button
+                      color="accent"
+                      title="Ver Detalle"
+                      (click)="btnView(element)"
+                    >
                       <mat-icon fontSet="fas" fontIcon="fa-eye"></mat-icon>
                       <span class="text-button-table">Ver Detalle</span>
-                    </button>
-                    <button tabindex="-1" mat-icon-button color="accent" title="Eliminar"
-                      *ngIf="element.estadoSolicitud === environment.TIPO_REGISTRADO"
-                            (click)="btnEliminar(element)">
-                      <mat-icon fontSet="fas" fontIcon="fa-trash"></mat-icon>
-                      <span class="text-button-table">Eliminar</span>
-                    </button>
-                    <button tabindex="-1" mat-icon-button color="accent" title="Editar"
-                      *ngIf="element.estadoSolicitud === environment.TIPO_REGISTRADO"
-                            (click)="btnEditar(element)">
-                      <mat-icon fontSet="fas" fontIcon="fa-edit"></mat-icon>
-                      <span class="text-button-table">Editar</span>
                     </button>
                   </mat-cell>
                 </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns; let odd = odd;" [ngClass]="{gray: odd}"></mat-row>
+                <mat-header-row
+                  *matHeaderRowDef="displayedColumns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: displayedColumns; let odd = odd"
+                  [ngClass]="{ gray: odd }"
+                ></mat-row>
               </mat-table>
 
-              <mat-paginator [pageSizeOptions]="[10, 20]"
-                             [length]="busquedaOut.totalElements"
-                             [pageSize]="busquedaIn.size"
-                             [pageIndex]="busquedaOut.page"
-                             (page)="getListaBusqueda($event)"
-                             showFirstLastButtons>
+              <mat-paginator
+                [pageSizeOptions]="[10, 20, 50, 100, 150]"
+                [length]="busquedaOut.totalElements"
+                [pageSize]="busquedaIn.size"
+                [pageIndex]="busquedaOut.page"
+                (page)="getListaBusqueda($event)"
+                showFirstLastButtons
+              >
               </mat-paginator>
-
             </div>
           </div>
 
           <div class="row">
             <div class="col-sm-12 col-md-12 mt-3 d-flex justify-content-end">
-              <button mat-flat-button color="accent" [disabled]="form.controls['codigoEstado'].value !== '1'" (click)="btnRecepcionar()">Recepcionar</button>
-              <button mat-flat-button color="accent" [disabled]="form.controls['codigoEstado'].value !== '2'" class="ml-2" (click)="btnAsignar()">Asignar</button>
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="form.controls['codigoEstado'].value !== '1'"
+                (click)="btnRecepcionar()"
+              >
+                Recepcionar
+              </button>
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="form.controls['codigoEstado'].value !== '2'"
+                class="ml-2"
+                (click)="btnAsignar()"
+              >
+                Asignar
+              </button>
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="
+                  form.controls['codigoEstado'].value !== '3' &&
+                  form.controls['codigoEstado'].value !== '5'
+                "
+                class="mx-1"
+                *ngIf="coordinador"
+                (click)="btnReasignar()"
+              >
+                Reasignar
+              </button>
             </div>
           </div>
         </ng-container>
-
       </mat-card-content>
     </mat-card>
-
   </div>
 </div>

@@ -1,31 +1,36 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FileInput, FileValidator } from 'ngx-material-file-input';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { requiredFileMinSize} from '../../helpers/requiredFileMinContentSize';
-import { requiredFileType} from '../../helpers/requireFileTypeValidator';
-import {DeleteOut, GetFileOut, UploadOut} from '../../models/upload-file.model';
-import {UploadFileService} from '../../services/upload-file.service';
-import {UtilService} from "../../services/util.service";
-import {environment} from "../../../../environments/environment";
-import {TipoArchivo} from "../../../masters/models/maestro.model";
+import { requiredFileMinSize } from '../../helpers/requiredFileMinContentSize';
+import { requiredFileType } from '../../helpers/requireFileTypeValidator';
+import { DeleteOut, UploadOut } from '../../models/upload-file.model';
+import { UploadFileService } from '../../services/upload-file.service';
+import { UtilService } from '../../services/util.service';
+import { environment } from '../../../../environments/environment';
+import { TipoArchivo } from '../../../masters/models/maestro.model';
 
 export interface List {
   idFile: string;
   fileName: string;
   fileTypeId: string;
   fileTypeDesc: string;
-  file?: File;
+  file: File;
 }
 
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
-  styleUrls: ['./upload-file.component.scss']
+  styleUrls: ['./upload-file.component.scss'],
 })
 export class UploadFileComponent implements OnInit, OnChanges {
-
-  environment = environment;
-
   @Input() addLabel!: string;
   @Input() minRequired: number = 0;
   @Input() maxPermitted: number = -1;
@@ -52,9 +57,6 @@ export class UploadFileComponent implements OnInit, OnChanges {
   data: List[] = [];
   loading = false;
 
-  @Input() isEditar: boolean = false;
-  @Input() listaArchivos: List[] = [];
-
   readonly maxSize = this.fileMaxSize ? this.fileMaxSize : 1050000;
   readonly minSize = this.fileMinSize ? this.fileMinSize : 1024;
 
@@ -62,30 +64,37 @@ export class UploadFileComponent implements OnInit, OnChanges {
 
   lastAttachUplaoding!: boolean;
 
-  constructor(private formBuilder: FormBuilder,
-              private storageService: UploadFileService,
-              private utilService: UtilService,
-              ) {
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private storageService: UploadFileService,
+    private utilService: UtilService
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      idTipoArchivo: [{value: '', disabled: this.disabledAll}, [Validators.required]],
-      file: [{value: '', disabled: this.disabledAll}, [FileValidator.maxContentSize(this.maxSize), requiredFileMinSize(this.minSize), requiredFileType(this.fileTypeAllowed)]]
+      idTipoArchivo: [
+        { value: '', disabled: this.disabledAll },
+        [Validators.required],
+      ],
+      file: [
+        { value: '', disabled: this.disabledAll },
+        [
+          FileValidator.maxContentSize(this.maxSize),
+          requiredFileMinSize(this.minSize),
+          requiredFileType(this.fileTypeAllowed),
+        ],
+      ],
     });
-
-    if(this.listaArchivos.length > 0){
-      this.data = [...this.listaArchivos];
-    }
-
     if (this.data.length < this.minRequired) {
       if (this.requiredTipoArchivo) {
-        this.form.controls['idTipoArchivo'].setValidators([Validators.required]);
+        this.form.controls['idTipoArchivo'].setValidators([
+          Validators.required,
+        ]);
       }
       this.form.controls['file'].setValidators([Validators.required]);
     }
     this.setActivateValidation();
-    this.lastAttachUplaoding=false;
+    this.lastAttachUplaoding = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -136,7 +145,11 @@ export class UploadFileComponent implements OnInit, OnChanges {
     if (this.requiredTipoArchivo) {
       this.form.controls['idTipoArchivo'].setValidators([]);
     }
-    this.form.controls['file'].setValidators([FileValidator.maxContentSize(this.maxSize), requiredFileMinSize(this.minSize), requiredFileType(this.fileTypeAllowed)]);
+    this.form.controls['file'].setValidators([
+      FileValidator.maxContentSize(this.maxSize),
+      requiredFileMinSize(this.minSize),
+      requiredFileType(this.fileTypeAllowed),
+    ]);
     this.form.markAllAsTouched();
   }
 
@@ -145,38 +158,76 @@ export class UploadFileComponent implements OnInit, OnChanges {
   }
 
   attach(file: FileInput) {
-    if (this.requiredTipoArchivo && !this.form.controls['idTipoArchivo'].value) {
+    //VALIDANDO CANTIDAD DE TIPO ARCHIVO
+    let uniqueValues = new Set();
+    let todosSonUnicos = true;
+    this.data.forEach((item) => {
+      if (uniqueValues.has(item.fileTypeId)) {
+        todosSonUnicos = false;
+      } else {
+        uniqueValues.add(item.fileTypeId);
+      }
+      if (uniqueValues.has(this.form.controls['idTipoArchivo'].value)) {
+        todosSonUnicos = false;
+      } else {
+        uniqueValues.add(item.fileTypeId);
+      }
+    });
+    if (!todosSonUnicos) {
+      this.emitResponseDifferenteTypeFile();
+      return;
+    }
+    //Fin
+
+    if (
+      this.requiredTipoArchivo &&
+      !this.form.controls['idTipoArchivo'].value
+    ) {
       this.form.controls['file'].reset();
       this.setActivateValidation();
-      this.utilService.getAlert('Aviso', 'Debe seleccionar un tipo de archivo.');
+      this.utilService.getAlert(
+        'Aviso',
+        'Debe seleccionar un tipo de archivo.'
+      );
       return;
     }
 
-    this.lastAttachUplaoding=false;
+    //todo: modificar para que reciba una lista
+
+    this.lastAttachUplaoding = false;
     if (this.form.controls['file'].valid) {
       if (this.data.length < this.maxPermitted) {
-        this.lastAttachUplaoding=true;
+        this.lastAttachUplaoding = true;
         if (file) {
           let item: List;
           this.loading = true;
           const fileFormData = new FormData();
           fileFormData.append('file', file.files[0]);
-          this.storageService.upload(fileFormData).subscribe((data: UploadOut) => {
-            const fileTypeSelected = this.form.controls['idTipoArchivo'].value
-            item = {
-              idFile: data.data,
-              fileName: file.files[0].name,
-              fileTypeId: this.requiredTipoArchivo ? fileTypeSelected : '',
-              fileTypeDesc: this.requiredTipoArchivo ? this.arrayTipoArchivo.filter(x => x.codigo === fileTypeSelected)[0].descripcion : '',
-              file: file.files[0]
-            };
-            this.postUploadSuccess(item);
-          }, error => {
-            this.postUploadError();
-            this.loading = false;
-          }, () => {
-            this.loading = false;
-          });
+          this.storageService.upload(fileFormData).subscribe(
+            (data: UploadOut) => {
+              const fileTypeSelected =
+                this.form.controls['idTipoArchivo'].value;
+              item = {
+                idFile: data.data,
+                fileName: file.files[0].name,
+                fileTypeId: this.requiredTipoArchivo ? fileTypeSelected : '',
+                fileTypeDesc: this.requiredTipoArchivo
+                  ? this.arrayTipoArchivo.filter(
+                      (x) => x.codigo === fileTypeSelected
+                    )[0].descripcion
+                  : '',
+                file: file.files[0],
+              };
+              this.postUploadSuccess(item);
+            },
+            (error) => {
+              this.postUploadError();
+              this.loading = false;
+            },
+            () => {
+              this.loading = false;
+            }
+          );
           this.form.controls['file'].reset();
           // this.form.controls['idTipoArchivo'].reset();
           this.setActivateValidation();
@@ -188,42 +239,34 @@ export class UploadFileComponent implements OnInit, OnChanges {
   }
 
   delete(file: List) {
-    const modalChangePassword = this.utilService.getConfirmation('Eliminar', '¿Desea eliminar el archivo?');
-    modalChangePassword.afterClosed().subscribe(result => {
+    const modalChangePassword = this.utilService.getConfirmation(
+      'Eliminar',
+      '¿Desea eliminar el archivo?'
+    );
+    modalChangePassword.afterClosed().subscribe((result) => {
       if (result) {
         let deleteResponse: DeleteOut;
-        this.storageService.delete(file.idFile).subscribe((data: DeleteOut) => {
-          deleteResponse = data;
-        }, error => {
-        }, () => {
-          if (deleteResponse.code !== environment.CODE_000) {
-            this.utilService.getAlert('Aviso', deleteResponse.message);
-            return;
+        this.storageService.delete(file.idFile).subscribe(
+          (data: DeleteOut) => {
+            deleteResponse = data;
+          },
+          (error) => {},
+          () => {
+            if (deleteResponse.code !== environment.CODE_000) {
+              this.utilService.getAlert('Aviso', deleteResponse.message);
+              return;
+            }
+            this.data.splice(this.data.indexOf(file, 0), 1);
+            this.setActivateValidation();
+            this.emitRefreshData();
           }
-          this.data.splice(this.data.indexOf(file, 0), 1);
-          this.setActivateValidation();
-          this.emitRefreshData();
-        });
+        );
       }
     });
   }
 
   downloadFile(index: number, item: List) {
-    if(this.isEditar){
-      let getFileOut: GetFileOut;
-      this.storageService.getFile(item.idFile).subscribe((data: GetFileOut) => {
-        getFileOut = data;
-      }, error => {
-      }, () => {
-        if (getFileOut.code !== this.environment.CODE_000) {
-          this.utilService.getAlert('Aviso', getFileOut.message);
-          return;
-        }
-        this.generaEditar(getFileOut.data.archivo, item.fileName);
-      });
-    } else {
-      this.genera(item.file!, item.fileName);
-    }    
+    this.genera(item.file, item.fileName);
   }
 
   genera(blob: Blob, name: string) {
@@ -246,26 +289,13 @@ export class UploadFileComponent implements OnInit, OnChanges {
     link.href = data;
     link.download = `${name}`;
     // this is necessary as link.click() does not work on the latest firefox
-    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    link.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true, view: window })
+    );
 
     setTimeout(function () {
       // For Firefox it is necessary to delay revoking the ObjectURL
       window.URL.revokeObjectURL(data);
-      link.remove();
-    }, 100);
-  }
-
-  generaEditar(base64: string, name: string) {
-    const linkSource = `data:application/pdf;base64, ${base64}`;
-    const link = document.createElement('a');
-    const fileName = name;
-
-    link.href = linkSource;
-    link.download = fileName;
-    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-
-    setTimeout(function () {
-      window.URL.revokeObjectURL(linkSource);
       link.remove();
     }, 100);
   }
@@ -283,7 +313,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
 
   private postUploadError() {
     if (this.data.length > 0) {
-      let indexItem =  this.data.length - 1;
+      let indexItem = this.data.length - 1;
       this.data.splice(indexItem, 1);
       this.setActivateValidation();
       this.emitRefreshData();
@@ -291,17 +321,34 @@ export class UploadFileComponent implements OnInit, OnChanges {
   }
 
   private refresh() {
-    if (this.data.length >= this.maxPermitted ) {
+    if (this.data.length >= this.maxPermitted) {
       this.inputDisable = false;
       this.form.controls['file'].disable();
-    }else {
+    } else {
       this.inputDisable = true;
       this.form.controls['file'].enable();
     }
   }
 
   emitResponseMaxAllowed() {
-    this.doResponseMaxAllowed.emit(`${this.textResponseMaxFileMessage ? this.textResponseMaxFileMessage : 'Máximo de archivos permitidos: '} ${this.maxPermitted}`);
+    this.doResponseMaxAllowed.emit(
+      `${
+        this.textResponseMaxFileMessage
+          ? this.textResponseMaxFileMessage
+          : 'Máximo de archivos permitidos: '
+      } ${this.maxPermitted}`
+    );
+    this.form.controls['file'].reset();
+  }
+
+  emitResponseDifferenteTypeFile() {
+    this.doResponseMaxAllowed.emit(
+      `${
+        this.textResponseMaxFileMessage
+          ? this.textResponseMaxFileMessage
+          : 'Solo se permite un archivo por cada Tipo de Archivo'
+      }`
+    );
     this.form.controls['file'].reset();
   }
 

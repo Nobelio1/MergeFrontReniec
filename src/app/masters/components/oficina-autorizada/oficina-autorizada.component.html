@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <label>Oficina Autorizada: <span *ngIf="required">(*)</span></label>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-select formControlName="idOficinaAutorizada" #cbo (selectionChange)="emitOficinaAutorizada(cbo.value)" placeholder="-- Seleccione --">
+      <mat-option [value]="">-- Seleccione --</mat-option>
+      <mat-option *ngFor="let item of oficinasOrec" [value]="item.codigo.trim()">
+        {{item.descripcion | uppercase}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('idOficinaAutorizada')?.invalid">{{utilService.getErrorMessage(form,'idOficinaAutorizada')}}</mat-error>
+  </mat-form-field>
+</form>

@@ -1,0 +1,85 @@
+<mat-card>
+  <mat-card-title>
+    {{dataDialog.title}}
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="content">
+      <div class="row">
+        <div class="col-sm-12 col-md-2">Código</div>
+        <div class="col-sm-12 col-md-10">Descripción</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{dataDialog.detalle.codigoOrec}}</div></div>
+        <div class="col-sm-12 col-md-10"><div class="custom-cell">{{dataDialog.detalle.descripcionOrecLarga}}</div></div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-sm-12 col-md-12">Ubigeo</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-12"><div class="custom-cell">{{dataDialog.detalle.ubigeo}}</div></div>
+      </div>
+
+
+      <ng-container *ngIf="dataDialog.tipo === environment.TIPO_REGISTRO_LIBRO">
+        <div class="row mt-3">
+          <div class="col-sm-12 col-md-2">Cantidad</div>
+          <div class="col-sm-12 col-md-6">Tipo de Libros Registrales</div>
+          <div class="col-sm-12 col-md-2">Idioma</div>
+          <div class="col-sm-12 col-md-2">Último Nº de la Acta Utilizada</div>
+        </div>
+        <div class="row mt-2" *ngFor="let item of dataDialog.detalle.detalleSolicitudLibro">
+          <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.cantidad}}</div></div>
+          <div class="col-sm-12 col-md-6"><div class="custom-cell">{{item.articulo}}</div></div>
+          <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.lengua}}</div></div>
+          <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.numeroUltimaActa}}</div></div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="dataDialog.tipo === environment.TIPO_REGISTRO_FIRMA">
+        <div class="row mt-3">
+          <div class="col-sm-12 col-md-2">Tipo Solicitud</div>
+          <div class="col-sm-12 col-md-2">DNI Registrador</div>
+          <div class="col-sm-12 col-md-3">Nombre</div>
+          <div class="col-sm-12 col-md-2">Celular/Teléfono</div>
+          <div class="col-sm-12 col-md-2">Correo Electrónico</div>
+          <div class="col-sm-12 col-md-1">Formatos</div>
+        </div>
+        <ng-container *ngFor="let item of dataDialog.detalle.detalleSolicitudFirma">
+          <div class="row mt-2">
+            <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.idTipoSolicitud === environment.TIPO_SOLICITUD_ALTA.toString() ? 'ALTA' : item.idTipoSolicitud === environment.TIPO_SOLICITUD_BAJA.toString() ? 'BAJA' : 'ACTUALIZAR'}}</div></div>
+            <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.numeroDocumento}}</div></div>
+            <div class="col-sm-12 col-md-3"><div class="custom-cell">{{item.preNombres}} {{item.primerApellido}} {{item.segundoApellido}}</div></div>
+            <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.celular}}</div></div>
+            <div class="col-sm-12 col-md-2"><div class="custom-cell" style="display: flex; word-break:break-all">{{item.email}}</div></div>
+            <div class="col-sm-12 col-md-1">
+              <button tabindex="-1" mat-flat-button color="accent"
+                      (click)="btnViewFiles(item.archivos)">
+                Ver
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <div class="row mt-3">
+        <div class="col-sm-12 col-md-2">Sustento</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{dataDialog.detalle.archivoSustento.tipoArchivo}}</div></div>
+        <div class="col-sm-12 col-md-5">
+          <div class="custom-cell">
+            <a href="javascript:void(0);" (click)="download(dataDialog.detalle.archivoSustento.codigo, dataDialog.detalle.archivoSustento.nombreOriginal)">{{dataDialog.detalle.archivoSustento.nombreOriginal}}</a>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="cancel()">Cerrar</button>
+  </mat-card-actions>
+</mat-card>

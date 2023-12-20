@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Datos de Contacto del Solicitante</h2>
+      <p>Sr. Registrador si no cuenta con celular o teléfono de la municipalidad puede registrar un número de contacto para comunicarnos con Usted.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-4 mb-2">
+      <label>Correo electrónico</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput formControlName="email" placeholder="Ingresar" autocomplete="off">
+        <mat-error *ngIf="form.get('email')?.invalid">{{utilService.getErrorMessage(form,'email', 6, 50, false, true)}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 col-md-4 mb-2">
+      <label>Confirmar Correo electrónico</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput formControlName="emailConfirm" placeholder="Ingresar" autocomplete="off">
+        <mat-error *ngIf="form.get('emailConfirm')?.invalid">{{utilService.getErrorMessage(form,'emailConfirm', 6, 50, false, true)}}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-4 mb-2">
+      <label>Número de Celular <span>(*)</span></label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput formControlName="celular" placeholder="Ingresar" autocomplete="off">
+        <mat-error *ngIf="form.get('celular')?.invalid">{{utilService.getErrorMessage(form,'celular', 8, 9, true)}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 col-md-4 mb-2">
+      <label>Confirmar Número de Celular <span>(*)</span></label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput formControlName="celularConfirm" placeholder="Ingresar" autocomplete="off">
+        <mat-error *ngIf="form.get('celularConfirm')?.invalid">{{utilService.getErrorMessage(form,'celularConfirm', 6, 11, true)}}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <mat-hint>(*) Datos obligatorios</mat-hint>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12 d-flex justify-content-end">
+      <button mat-flat-button color="accent" class="custom-button" (click)="btnNext(step)">Siguiente</button>
+    </div>
+  </div>
+</form>

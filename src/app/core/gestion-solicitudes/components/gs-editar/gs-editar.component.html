@@ -1,0 +1,189 @@
+<mat-card>
+  <mat-card-title> Editar Solicitud </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="content">
+      <div class="bloque">
+        <div class="row subtitle">Datos de la Oficina</div>
+        <div class="row">
+          <div class="col-sm-12 col-md-2">Código</div>
+          <div class="col-sm-12 col-md-10">Descripción</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-2">
+            <div class="custom-cell">{{ detalleSolicitud.codigoOrec }}</div>
+          </div>
+          <div class="col-sm-12 col-md-10">
+            <div class="custom-cell">
+              {{ detalleSolicitud.descripcionOrecLarga }}
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-sm-12 col-md-12">Ubigeo</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="custom-cell">{{ detalleSolicitud.ubigeo }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque">
+        <div class="row subtitle">Detalle de la solicitud</div>
+        <form [formGroup]="formDetLibro" >
+        <ng-container *ngIf="tipoRegistro === environment.TIPO_REGISTRO_LIBRO">
+          <div class="row mt-3">
+            <div class="col-sm-12 col-md-2">Cantidad</div>
+            <div class="col-sm-12 col-md-6">Tipo de Libros Registrales</div>
+            <div class="col-sm-12 col-md-2">Idioma</div>
+            <div class="col-sm-12 col-md-2">Último Nº de la Acta Utilizada</div>
+          </div>
+          <ng-container formArrayName="arreglo">
+          <div class="row mt-2" *ngFor="let item of detalleLibroArray.controls; index as i" [formGroupName]="i">
+            <div class="col-sm-12 col-md-2">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="cantidad" #cboCantidad placeholder="Seleccione">
+                  <mat-option [value]="">-- Seleccione --</mat-option>
+                  <mat-option *ngFor="let item of cantidades" [value]="item">
+                    {{item}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="codArticulo" #cboArticulo placeholder="-- Seleccione --">
+                  <mat-option [value]="">-- Seleccione --</mat-option>
+                  <mat-option *ngFor="let item of articulos" [value]="item.codigo">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-2">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="codLengua" #cboIdioma placeholder="-- Seleccione --">
+                  <mat-option [value]="">-- Seleccione --</mat-option>
+                  <mat-option *ngFor="let item of lenguas" [value]="item.codigo">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-2">
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput formControlName="numeroUltimaActa" placeholder="Ingresar" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-container>
+        </ng-container>
+      </form>
+
+        <form [formGroup]="formDetFirma" >
+        <ng-container *ngIf="tipoRegistro === environment.TIPO_REGISTRO_FIRMA">
+          <div class="row mt-3">
+            <div class="col-sm-12 col-md-2">Tipo Solicitud</div>
+            <div class="col-sm-12 col-md-2">DNI Registrador</div>
+            <div class="col-sm-12 col-md-3">Nombre</div>
+            <div class="col-sm-12 col-md-2">Celular/Teléfono</div>
+            <div class="col-sm-12 col-md-2">Correo Electrónico</div>
+            <div class="col-sm-12 col-md-1">Formatos</div>
+          </div>
+          <ng-container formArrayName="arreglo"
+          >
+            <div class="row mt-2 detail" *ngFor="let item of detalleFirmaArray.controls; index as i" [formGroupName]="i">
+              <div class="col-sm-12 col-md-2">
+                <div class="custom-cell">
+                  {{ item.get('tipoSol')?.value }}
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-2">
+                <div class="custom-cell">{{ item.get('dni')?.value }}</div>
+              </div>
+              <div class="col-sm-12 col-md-3">
+                <div class="custom-cell">
+                  {{ item.get('nombre')?.value}}
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput formControlName="celular" placeholder="Ingresar" autocomplete="off">                  
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 col-md-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput formControlName="email" placeholder="Ingresar" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 col-md-1">
+                <button
+                  tabindex="-1"
+                  mat-flat-button
+                  color="accent"
+                  (click)="btnViewFiles(item.get('formatos')?.value, item.get('idTiposol')?.value, item.get('idDetalleSolicitud')?.value)"
+                >
+                  Ver
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+
+      </form>
+
+      </div>
+      <div class="bloque">
+        <div class="row subtitle">Sustento</div>
+        <app-upload-file #fileSustento
+                   [addLabel]="'Agregar archivo'"
+                   [textHelp]="'Peso máximo de archivo 1 mb - Formatos: ' + typesAllowed.toString()"
+                   [minRequired]="1"
+                   [maxPermitted]="1"
+                   [fileMaxSize]="1050000"
+                   [fileTypeAllowed]="typesAllowed"
+                   [textRequired]="'Debe adjuntar mínimo 1 archivo'"
+                   [requiredTipoArchivo]="true"
+                   [arrayTipoArchivo]="tipoArchivoSustento"
+                   (doResponseMaxAllowed)="showResponse($event)"
+                   (doRefreshData)="getFilesArray($event)"
+                   [listaArchivos]="arrayFilesSustento"
+                   [isEditar]="true"
+                   >
+  </app-upload-file>
+        <!-- <div class="row">
+          <div class="col-sm-12 col-md-2">
+            <div class="custom-cell">
+              {{ detalleSolicitud.archivoSustento.tipoArchivo }}
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="custom-cell">
+              <a
+                href="javascript:void(0);"
+                (click)="
+                  download(
+                    detalleSolicitud.archivoSustento.codigo,
+                    detalleSolicitud.archivoSustento.nombreOriginal
+                  )
+                "
+                >{{ detalleSolicitud.archivoSustento.nombreOriginal }}</a
+              >
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-stroked-button color="accent" (click)="cancel()">
+      Cancelar
+    </button>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="actualizarSolicitud()">
+      Actualizar
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,73 @@
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-sm-12 col-md-4">
+      <ng-container *ngIf="requiredTipoArchivo && arrayTipoArchivo; else templateNoArrayTipoArchivo">
+        <label>Tipo de Archivo</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select formControlName="idTipoArchivo" placeholder="Seleccione">
+            <mat-option [value]="">-- Seleccione --</mat-option>
+            <mat-option *ngFor="let item of arrayTipoArchivo" [value]="item.codigo">
+              {{item.descripcion | uppercase}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('idTipoArchivo')?.invalid">Tipo archivo requerido</mat-error>
+        </mat-form-field>
+      </ng-container>
+
+      <ng-template #templateNoArrayTipoArchivo>
+        <mat-error><small>Debe definir los tipos de archivos -> [arrayTipoArchivo]</small></mat-error>
+      </ng-template>
+    </div>
+
+    <div class="col-sm-12 col-md-8">
+      <label>Formatos</label>
+      <mat-form-field appearance="outline" color="accent" class="file-input w-100">
+        <ngx-mat-file-input formControlName="file" [valuePlaceholder]="addLabel" (click)="resetFile($event)" (change)="attach(form.controls['file'].value)"></ngx-mat-file-input>
+        <span matPrefix><mat-icon fontSet="fas" fontIcon="fa-plus-circle" class="custom-plus-button"></mat-icon></span>
+        <mat-hint>{{textHelp}}</mat-hint>
+        <mat-error *ngIf="form.get('file')!.hasError('required')">
+          {{textRequired ? textRequired : 'El archivo es requerido.'}}
+        </mat-error>
+        <mat-error *ngIf="form.get('file')?.hasError('requiredFileType')">
+          {{textFilesAllowed ? textFilesAllowed : 'Tipo de archivo no permitido.'}}
+        </mat-error>
+        <mat-error *ngIf="form.get('file')?.hasError('requiredFileMinSize')">
+          {{textMinFileSize ? textMinFileSize : 'Tamaño mínimo de archivo no permitido.'}}
+        </mat-error>
+        <mat-error *ngIf="form.get('file')?.hasError('maxContentSize')">
+          {{textMaxFileSize ? textMaxFileSize : 'Tamaño máximo de archivo no permitido.'}}
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <ul *ngIf="data.length > 0" class="mt-3">
+        <li class="custom-table header">
+          <span class="item font-weight-bold">N°</span>
+          <span class="type font-weight-bold">Tipo de archivo</span>
+          <span class="name font-weight-bold">Nombre de archivo</span>
+          <span class="empty"></span>
+        </li>
+        <li *ngFor="let item of data; let i = index" [value]="item" class="custom-table content-row">
+          <span class="item">{{i <= 9 ? '0' + (i + 1) : i +1 }}</span>
+          <span class="type">{{item.fileTypeDesc | uppercase}}</span>
+          <span class="name"><a href="javascript:void(0);" (click)="downloadFile(i, item)">{{item.fileName}}</a></span>
+          <ng-container *ngIf="loading">
+            <mat-progress-bar mode="indeterminate" class="ml-3"></mat-progress-bar>
+          </ng-container>
+          <ng-container>
+            <button mat-icon-button color="accent" (click)="delete(item)" matTooltip="Eliminar adjunto">
+              <mat-icon fontSet="fas" fontIcon="fa-trash"></mat-icon>
+            </button>
+          </ng-container>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</form>

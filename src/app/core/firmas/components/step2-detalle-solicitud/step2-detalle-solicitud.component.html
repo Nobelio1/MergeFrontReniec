@@ -1,0 +1,119 @@
+<mat-card class="mb-4">
+  <mat-card-content class="mb-3 mt-1">
+
+    <form [formGroup]="form">
+
+      <div class="row">
+        <ng-template #dniApellidoModal>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Validación DNI</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Por favor, ingrese el apellido paterno asociado al DNI para continuar:</p>
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido paterno</mat-label>
+        <input matInput formControlName="primerApellido" placeholder="Apellido paterno">
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="validateDNI()">Validar</button>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>
+        <div class="col-sm-12 col-md-2">
+          <label>Tipo Solicitud</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="idTipoSolicitud" #cboTipoSolicitud (selectionChange)="fnLoadTipoArchivo(cboTipoSolicitud.value)" placeholder="Seleccione">
+              <mat-option [value]="">-- Seleccione --</mat-option>
+              <mat-option *ngFor="let item of arrayTipoSolicitud" [value]="item.codigo">
+                {{item.descripcion | uppercase}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('idTipoSolicitud')?.invalid">{{utilService.getErrorMessage(form,'idTipoSolicitud')}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-2">
+          <label>DNI Registrador</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="numeroDocumento" placeholder="Ingresar" autocomplete="off"  pattern="[0-9]{8}" maxlength="8" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
+            <button type="button" mat-icon-button matSuffix (click)="openDNIValidationModal()">
+              <mat-icon fontSet="fas" fontIcon="fa-search"></mat-icon>
+            </button>
+            <mat-error *ngIf="form.get('numeroDocumento')?.invalid">{{utilService.getErrorMessage(form,'numeroDocumento', 8, 8, true)}}</mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <div class="col-sm-12 col-md-2">
+          <label>Celular / Teléfono</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="celular" placeholder="Ingresar" autocomplete="off">
+            <mat-error *ngIf="form.get('celular')?.invalid">{{utilService.getErrorMessage(form,'celular', 8, 9, true)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+          <label>Correo Electrónico</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="email" placeholder="Ingresar" autocomplete="off">
+            <mat-error *ngIf="form.get('email')?.invalid">{{utilService.getErrorMessage(form,'email', 6, 50, false, true)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-12 col-md-6">
+          <label>Nombres</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="preNombres" placeholder="Ingresar" autocomplete="off">
+            <mat-error *ngIf="form.get('preNombres')?.invalid">{{utilService.getErrorMessage(form,'preNombres', 1, 60)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-3">
+          <label>Apellido Paterno</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="primerApellido" placeholder="Ingresar" autocomplete="off">
+            <mat-error *ngIf="form.get('primerApellido')?.invalid">{{utilService.getErrorMessage(form,'primerApellido', 1, 40)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-3">
+          <label>Apellido Materno</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="segundoApellido" placeholder="Ingresar" autocomplete="off">
+            <mat-error *ngIf="form.get('segundoApellido')?.invalid">{{utilService.getErrorMessage(form,'segundoApellido', 1, 40)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <app-upload-file #filesTipoSolicitud
+                       [addLabel]="'Agregar archivo'"
+                       [textHelp]="'Peso máximo de archivo 1 mb - Formatos: ' + typesAllowed.toString()"
+                       [minRequired]="2"
+                       [maxPermitted]="4"
+                       [fileMaxSize]="1050000"
+                       [fileTypeAllowed]="typesAllowed"
+                       [textRequired]="'Debe adjuntar mínimo 1 archivo'"
+                       [requiredTipoArchivo]="true"
+                       [arrayTipoArchivo]="arrayTipoArchivo"
+                       [disabledAll]="disabledAll"
+                       (doResponseMaxAllowed)="showResponse($event)"
+                       (doRefreshData)="getFilesArray($event)">
+      </app-upload-file>
+
+    </form>
+
+  </mat-card-content>
+</mat-card>
+
+<!-- Contenido existente... -->
+
+<!-- Template del Modal para ingresar el apellido -->

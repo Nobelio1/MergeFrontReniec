@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-content>
+    <div class="left">
+      <p>Datos de la Oficina Autorizada</p>
+    </div>
+    <div class="right">
+      <form [formGroup]="form">
+
+        <div class="row">
+          <div class="col-sm-12 col-md-4 mb-2">
+            <app-ubigeo [type]="'DEP'"
+                        [required]="true"
+                        [idDepartamento]="form.controls['ubigeoDepartamento'].value"
+                        (ubigeoSelected)="getDep($event)"></app-ubigeo>
+          </div>
+          <div class="col-sm-12 col-md-4 mb-2">
+            <app-ubigeo [type]="'PRO'"
+                        [idDepartamento]="form.controls['ubigeoDepartamento'].value"
+                        [idProvincia]="form.controls['ubigeoProvincia'].value"
+                        (ubigeoSelected)="getPro($event)"></app-ubigeo>
+          </div>
+          <div class="col-sm-12 col-md-4 mb-2">
+            <app-ubigeo [type]="'DIS'"
+                        [idDepartamento]="form.controls['ubigeoDepartamento'].value"
+                        [idProvincia]="form.controls['ubigeoProvincia'].value"
+                        [idDistrito]="form.controls['ubigeoDistrito'].value"
+                        (ubigeoSelected)="getDis($event)"></app-ubigeo>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-4 mb-2">
+            <app-centro-problado #cboCentroPoblado
+                                 [idDepartamento]="form.controls['ubigeoDepartamento'].value"
+                                 [idProvincia]="form.controls['ubigeoProvincia'].value"
+                                 [idDistrito]="form.controls['ubigeoDistrito'].value"
+                                 [idCentroPoblado]="form.controls['centroPoblado'].value"
+                                 (ubigeoSelected)="getCentroPoblado($event)"></app-centro-problado>
+          </div>
+          <div class="col-sm-12 col-md-8 mb-2">
+            <app-oficina-autorizada #cboOficinaAutorizada
+                                    [required]="true"
+                                    [idDepartamento]="form.controls['ubigeoDepartamento'].value"
+                                    [idProvincia]="form.controls['ubigeoProvincia'].value"
+                                    [idDistrito]="form.controls['ubigeoDistrito'].value"
+                                    [idCentroPoblado]="form.controls['centroPoblado'].value"
+                                    [idOficinaAutorizada]="form.controls['oficinaAutorizada'].value"
+                                    (oficinaOrecSelected)="getOficinaAutorizada($event)"></app-oficina-autorizada>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <mat-hint>(*) Datos obligatorios</mat-hint>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

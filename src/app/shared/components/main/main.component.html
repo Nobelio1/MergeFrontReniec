@@ -1,0 +1,63 @@
+<app-header></app-header>
+<div class="container">
+  <app-heading [title]="title"></app-heading>
+  <div class="row">
+    <div class="col-12">
+      <p>Por este canal virtual podrá realizar su solicitud de firma, material registral y podra realizar el seguimiento de sus solicitudes, por favor seleccione una opción para ingresar.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <a [routerLink]="environment.URL_MOD_FIRMAS">
+        <div class="direct-access">
+          <mat-card class="direct-access-back"></mat-card>
+          <mat-card class="direct-access-front">
+            <mat-card-content>
+              <img src="assets/images/icon-1.png" alt="Solicitar Registro de Firmas">
+              <p>Solicitar Registro de Firmas</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </a>
+
+      <a [routerLink]="environment.URL_MOD_ACTAS_REGISTRALES">
+        <div class="direct-access">
+          <mat-card class="direct-access-back"></mat-card>
+          <mat-card class="direct-access-front">
+            <mat-card-content>
+              <img src="assets/images/icon-2.png" alt="Solicitar Libro de Actas Registrales">
+              <p>Solicitar Libro de Actas Registrales</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </a>
+
+      <a [routerLink]="environment.URL_MOD_REPORTES">
+        <div class="direct-access">
+          <mat-card class="direct-access-back"></mat-card>
+          <mat-card class="direct-access-front">
+            <mat-card-content>
+              <img src="assets/images/icon-2.png" alt="Reportes">
+              <p>Reportes</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </a>
+
+      <a [routerLink]="environment.URL_MOD_SEGUIMIENTO">
+        <div class="direct-access">
+          <mat-card class="direct-access-back"></mat-card>
+          <mat-card class="direct-access-front">
+            <mat-card-content>
+              <img src="assets/images/icon-3.png" alt="Seguimiento de Solicitudes">
+              <p>Seguimiento de Solicitudes</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+</div>

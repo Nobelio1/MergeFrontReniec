@@ -1,0 +1,16 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <app-validacion-datos #formValidacionDatos [paraSeguimiento]="true"></app-validacion-datos>
+  </div>
+</div>
+
+<div class="row">
+  <app-recaptcha (resolveEvent)="resolveCaptcha($event)"></app-recaptcha>
+</div>
+
+<div class="row">
+  <div class="col-12 d-flex justify-content-end">
+    <button tabindex="-1" mat-stroked-button color="accent" (click)="back()">Regresar</button>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="start()" [disabled]="!noSoyRobot">Iniciar</button>
+  </div>
+</div>

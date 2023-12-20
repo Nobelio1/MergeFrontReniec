@@ -1,0 +1,46 @@
+<mat-card>
+    <mat-card-title>
+      {{dataDialog.title}}
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <div class="content">
+  
+        <ng-container *ngIf="dataDialog.files.length > 0">
+          <div class="row">
+            <div class="col-sm-12 col-md-2">Formato</div>
+          </div>
+          <app-upload-file #fileSustento
+                   [addLabel]="'Agregar archivo'"
+                   [textHelp]="'Peso máximo de archivo 1 mb - Formatos: ' + typesAllowed.toString()"
+                   [minRequired]="2"
+                   [maxPermitted]="4"
+                   [fileMaxSize]="1050000"
+                   [fileTypeAllowed]="typesAllowed"
+                   [textRequired]="'Debe adjuntar mínimo 1 archivo'"
+                   [requiredTipoArchivo]="true"
+                   [arrayTipoArchivo]="arrayTipoArchivo"
+                   (doResponseMaxAllowed)="showResponse($event)"
+                   (doRefreshData)="getFilesArray($event)"
+                   [listaArchivos]="listaArchivosFormatos"
+                   [isEditar]="true"
+                   >
+            </app-upload-file>
+          <!-- <div class="row mb-2" *ngFor="let file of dataDialog.files">
+            <div class="col-sm-12 col-md-6"><div class="custom-cell">{{file.tipoArchivo}}</div></div>
+            <div class="col-sm-12 col-md-6">
+              <div class="custom-cell">
+                <a href="javascript:void(0);" (click)="download(file.codigo, file.nombreOriginal)">{{file.nombreOriginal}}</a>
+              </div>
+            </div>
+          </div> -->
+        </ng-container>
+  
+      </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <button tabindex="-1" mat-flat-button color="accent" (click)="aceptar()">Aceptar</button>
+    </mat-card-actions>
+  </mat-card>
+  

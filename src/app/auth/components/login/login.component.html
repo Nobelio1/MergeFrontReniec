@@ -1,0 +1,58 @@
+<mat-card class="card-login">
+  <div class="thumbnail">
+    <mat-icon fontSet="fas" fontIcon="fa-user-tie"></mat-icon>
+  </div>
+  <mat-card-content>
+
+    <form [formGroup]="form">
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 p-0 mb-2">
+          <label>Usuario:</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="username" placeholder="Ingrese su usuario" autocomplete="off">
+            <mat-error *ngIf="form.get('username')?.invalid">{{utilService.getErrorMessage(form,'username')}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 p-0 mb-2">
+          <label>Contraseña:</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="password" type="password" placeholder="Ingresa tu clave" autocomplete="off">
+            <mat-error *ngIf="form.get('password')?.invalid">{{utilService.getErrorMessage(form,'password')}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 p-0 mb-3">
+          <button mat-flat-button color="accent" class="w-100" (click)="login()">Ingresar</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 p-0 mb-2">
+          <button mat-stroked-button color="accent" class="w-100" (click)="changePassword()">Cambiar Contraseña</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 p-0 mb-2">
+          <p>Ingreso por primera vez. <a href="javascript:void(0);" (click)="fnFirstTime()">Click aquí</a></p>
+        </div>
+      </div>
+
+    </form>
+
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-footer>
+    <div class="row p-3">
+      <div class="col-sm-12 col-md-12 p-0 text-center">
+        <a [routerLink]="environment.URL_INTRO" class="small">Pantalla Principal</a>
+      </div>
+    </div>
+  </mat-card-footer>
+</mat-card>

@@ -1,0 +1,22 @@
+* {
+  &:active,
+  :focus {
+    outline: none !important;  // 1
+  }
+}
+
+a:not(.mat-button-base):not(.mat-raised-button):not(.mat-fab):not(.mat-mini-fab):not([mat-list-item]) {
+  color: #1DB0EF; // 2
+}
+
+// Custom bootstrap
+.row {
+  margin-right: 0;
+  margin-left: 0;
+  display: flex;
+  align-items: flex-end;
+}
+//.row > * {
+//  padding-right: calc(var(--bs-gutter-x) * 1.2);
+//  padding-left: calc(var(--bs-gutter-x) * 1.2);
+//}

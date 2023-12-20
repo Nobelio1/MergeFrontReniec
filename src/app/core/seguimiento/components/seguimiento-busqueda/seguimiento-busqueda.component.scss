@@ -1,0 +1,105 @@
+button:first-child {
+  margin-right: 8px;
+}
+.row {
+  align-items: inherit;
+}
+.custom-search-buttons {
+  display: flex;
+  align-items: center;
+}
+.custom-search-buttons button {
+  padding: 2px 15px;
+}
+h3 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 36px;
+  color: #00335E;
+}
+
+
+
+.mat-column-acciones {
+  justify-content: flex-end;
+}
+mat-header-row.mat-header-row {
+  background-color: #E5E5E5;
+  width: 100%;
+}
+.mat-header-cell {
+  font-weight: 600;
+  font-size: .9rem;
+  color: #000;
+  text-align: center;
+}
+mat-cell.mat-cell {
+  font-style: normal;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+}
+
+button.button-custom-search {
+  line-height: 40px;
+  margin-top: 5px;
+}
+
+.mat-column-nroSolicitud {
+  flex: 0 0 15%;
+  padding: 7px 20px;
+}
+.mat-column-fechaRegistro {
+  flex: 0 0 15%;
+  padding: 7px;
+}
+.mat-column-tipoRegistro {
+  flex: 0 0 15%;
+  padding: 7px;
+}
+.mat-column-estado {
+  flex: 0 0 20%;
+  padding: 7px;
+}
+.mat-column-docRegistrado,
+.mat-column-docRespuesta {
+  flex: 0 0 15%;
+  padding: 7px;
+}
+
+.custom-row {
+  display: flex;
+  align-items: center;
+}
+
+// CUSTOM MAT ICON BUTTONS
+.mat-column-acciones button {
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+.mat-column-acciones .mat-icon-button {
+  line-height: 0;
+}
+// END - CUSTOM MAT ICON BUTTONS
+
+@media screen and (max-width: 768px) {
+  button.button-custom-search {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 680px) {
+  mat-cell:nth-of-type(1):before {content: "N° Solicitud";}
+  mat-cell:nth-of-type(2):before {content: "Fecha Trámite";}
+  mat-cell:nth-of-type(3):before {content: "Tipo Registro";}
+  mat-cell:nth-of-type(4):before {content: "Estado Documento";}
+  mat-cell:nth-of-type(5):before {content: "Ver Doc. Registado";}
+  mat-cell:nth-of-type(6):before {content: "Ver Doc. Respuesta";}
+}

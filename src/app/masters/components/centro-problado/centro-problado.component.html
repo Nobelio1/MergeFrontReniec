@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <label>Centro Poblado:</label>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-select formControlName="sUbigeo" #cbo (selectionChange)="emitCentroPoblado(cbo.value)" placeholder="-- Seleccione --">
+      <mat-option [value]="">-- Seleccione --</mat-option>
+      <mat-option *ngFor="let item of ubigeo" [value]="item.codigo.trim()">
+        {{item.descripcion | uppercase}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('sUbigeo')?.invalid">{{utilService.getErrorMessage(form,'sUbigeo')}}</mat-error>
+  </mat-form-field>
+</form>

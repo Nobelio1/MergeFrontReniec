@@ -1,0 +1,30 @@
+.mat-card {
+  padding: 0;
+}
+.mat-card-title {
+  font-weight: 500;
+  font-size: 18px;
+  color: #000;
+  margin: 0;
+  padding: 15px;
+}
+.mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 15px !important;
+}
+.mat-card-actions button {
+  margin-left: 8px !important;
+}
+.mat-card-content {
+  margin-bottom: 0;
+}
+.content {
+  font-weight: 500;
+  line-height: 22px;
+  color: #686666;
+  padding: 35px 50px;
+  overflow: hidden;
+}

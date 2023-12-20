@@ -1,0 +1,32 @@
+header {
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+}
+.logo {
+  width: 141px;
+  height: 52px;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+.main {
+  background-color: white;
+}
+.secondary {
+  display: inline-grid;
+}
+.title,
+.subtitle {
+  display: block;
+  line-height: normal;
+}
+.title {
+  color: #A7A5A5;
+  font-size: 16px;
+  font-weight: normal;
+}
+.subtitle {
+  color: #00335E;
+  font-size: 24px;
+  font-weight: 600;
+}

@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <label>Comunidad:</label>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-select formControlName="idComunidad" placeholder="Seleccione">
+      <mat-option [value]="">-- Seleccione --</mat-option>
+      <!--          <mat-option *ngFor="let item of centrosPoblados" [value]="item.sIdUbigeo.trim()">-->
+      <!--            {{item.sNombre | uppercase}}-->
+      <!--          </mat-option>-->
+    </mat-select>
+    <mat-error *ngIf="form.get('idComunidad')?.invalid">{{utilService.getErrorMessage(form,'idComunidad')}}</mat-error>
+  </mat-form-field>
+</form>

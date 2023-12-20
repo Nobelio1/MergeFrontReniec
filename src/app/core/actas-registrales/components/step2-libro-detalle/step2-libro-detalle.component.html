@@ -1,0 +1,63 @@
+<mat-card class="mb-4">
+  <mat-card-content class="mb-3 mt-1">
+
+    <form [formGroup]="form">
+
+      <div class="row">
+
+        <div class="col-sm-12 col-md-2">
+          <label>Cantidad</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="cantidad" #cboCantidad placeholder="Seleccione">
+              <mat-option [value]="">-- Seleccione --</mat-option>
+              <mat-option *ngFor="let item of cantidad" [value]="item">
+                {{item}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('cantidad')?.invalid">{{utilService.getErrorMessage(form,'cantidad')}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+          <label>Tipo de Libro Registrales</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="codigoArticulo" #cboArticulo placeholder="-- Seleccione --">
+              <mat-option [value]="">-- Seleccione --</mat-option>
+              <mat-option *ngFor="let item of arrayArticulos" [value]="item.codigo">
+                {{item.descripcion}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('codigoArticulo')?.invalid">{{utilService.getErrorMessage(form,'codigoArticulo', 8, 8, true)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-2">
+          <label>Idioma</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="codigoLengua" #cboIdioma placeholder="-- Seleccione --">
+              <mat-option [value]="">-- Seleccione --</mat-option>
+              <mat-option *ngFor="let item of arrayLenguas" [value]="item.codigo">
+                {{item.descripcion}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('codigoLengua')?.invalid">{{utilService.getErrorMessage(form,'codigoLengua', 8, 9, true)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-2">
+          <label>Último Nº de la Acta Utilizada</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="numeroUltimaActa" placeholder="Ingresar" autocomplete="off">
+            <mat-error *ngIf="form.get('numeroUltimaActa')?.invalid">{{utilService.getErrorMessage(form,'numeroUltimaActa', 1, 15, true)}}</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+    </form>
+
+  </mat-card-content>
+</mat-card>
+
+
+

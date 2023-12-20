@@ -1,0 +1,78 @@
+//@use '@angular/material' as mat;
+//@import './src/palettes';
+//@include mat.core();
+//$app-primary: mat.define-palette($palette-primary);
+//$app-accent: mat.define-palette($palette-secondary);
+
+.bg-intro {
+  background: linear-gradient(294.09deg, #00335E 49.14%, #075088 87.4%, #0D6AAE 108.27%);
+  width: 100%;
+  height: 100%;
+}
+.intro {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.intro-column {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+//LEFT
+.intro-left {
+  display: grid;
+  color: white;
+  padding: 1rem;
+  h1 {
+    font-size: 45px;
+    font-weight: 800;
+    letter-spacing: -.025em!important;
+  }
+  p {
+    font-size: 18px;
+  }
+}
+.intro-left .logo {
+  width: auto;
+  margin-bottom: 15px;
+}
+
+//RIGHT
+.intro-right {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media screen and (max-width: 959px) {
+  .intro {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .intro-column {
+    height: auto;
+  }
+  .intro-left,
+  .intro-right {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.025em!important;
+    }
+    .optional {
+      display: none;
+    }
+  }
+}

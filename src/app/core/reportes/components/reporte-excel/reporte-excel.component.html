@@ -1,0 +1,63 @@
+<app-header></app-header>
+
+
+
+  <br><br><br><br><br>
+
+  <div class="filtros">
+    <div class="filtro">
+      <label for="tipoSolicitud" class="filtro-label">Tipo Solicitud:</label>
+      <input type="checkbox" id="tipoSolicitud" class="tipo-solicitud-checkbox"> Registro
+      <input type="checkbox" id="tipoSolicitud" class="tipo-solicitud-checkbox"> Libro
+    </div>
+    <div class="filtro">
+      <label for="rangoFecha" class="filtro-label">Rango de Fecha:</label>
+      <input type="date" id="rangoFecha" class="input-field">
+      <label for="estado" class="filtro-label">Estado:</label>
+      <select id="estado" class="input-field">
+        <option value="pendiente">Pendiente</option>
+        <option value="atendido">Atendido</option>
+        <option value="rechazado">Rechazado</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label for="solicitante" class="filtro-label">Solicitante:</label>
+      <input type="text" id="solicitante" class="input-field" placeholder="Buscar solicitante...">
+      <button class="btn-buscar">Buscar</button>
+    </div>
+    <div class="filtro">
+      <label for="analista" class="filtro-label">Analista:</label>
+      <input type="text" id="analista" class="input-field" placeholder="Buscar analista...">
+      <button class="btn-buscar">Buscar</button>
+    </div>
+  </div>
+  <table class="grilla-reporte">
+    <thead>
+      <tr>
+        <th>Tipo Solicitud</th>
+        <th>Rango de Fecha</th>
+        <th>Estado</th>
+        <th>Solicitante</th>
+        <th>Analista</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Registro</td>
+        <td>01/08/2023 - 15/08/2023</td>
+        <td>Pendiente</td>
+        <td>Juan Pérez</td>
+        <td>María Rodríguez</td>
+      </tr>
+      <!-- Más filas de datos aquí -->
+    </tbody>
+  </table>
+  <div class="botones">
+    <button class="btn-exportar">Exportar a Excel</button>
+    <button class="btn-generar">Generar Reporte</button>
+  </div>
+  <div class="pagination">
+    <span class="page-number">Página 1</span>
+    <span class="page-number">Página 2</span>
+    <!-- Agregar más números de página según sea necesario -->
+  </div>

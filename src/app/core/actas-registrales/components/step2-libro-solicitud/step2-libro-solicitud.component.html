@@ -1,0 +1,95 @@
+<form [formGroup]="form">
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Detalle de Oficina</h2>
+    </div>
+  </div>
+
+  <form [formGroup]="formDetalle">
+    <div class="row">
+      <div class="col-sm-12 col-md-3 mb-2">
+        <label>Código</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="codigoOrec" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-9 mb-2">
+        <label>Oficina Autorizada</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="descripcionLocalLarga" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12 mb-2">
+        <label>Ubigeo</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="ubigeo" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Detalle del Material Registral</h2>
+    </div>
+  </div>
+
+  <ng-container *ngFor="let item of arrayDetalle; let i = index">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 custom-card-relative">
+        <button mat-mini-fab color="accent" class="custom-button-delete" (click)="btnDeleteDetalle(item)">
+          <mat-icon fontSet="fas" fontIcon="fa-times" matTooltip="Eliminar"></mat-icon>
+        </button>
+        <app-step2-libro-detalle
+          [index]="i + 1"
+          [arrayLenguas]="lengua"
+          [arrayArticulos]="articulo"></app-step2-libro-detalle>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mb-3">
+    <div class="col-sm-12 col-md-12 d-flex justify-content-end">
+      <button mat-stroked-button color="accent" class="custom-button-add" (click)="btnAddDetalle()">
+        <mat-icon fontSet="fas" fontIcon="fa-plus"></mat-icon>
+        Agregar
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Detalle de Sustento</h2>
+    </div>
+  </div>
+
+  <app-upload-file #fileSustento
+                   [addLabel]="'Agregar archivo'"
+                   [textHelp]="'Peso máximo de archivo 1 mb - Formatos: ' + typesAllowed.toString()"
+                   [minRequired]="1"
+                   [maxPermitted]="1"
+                   [fileMaxSize]="1050000"
+                   [fileTypeAllowed]="typesAllowed"
+                   [textRequired]="'Debe adjuntar mínimo 1 archivo'"
+                   [requiredTipoArchivo]="true"
+                   [arrayTipoArchivo]="tipoArchivoSustento"
+                   (doResponseMaxAllowed)="showResponse($event)"
+                   (doRefreshData)="getFilesArray($event)">
+  </app-upload-file>
+
+  <div class="row mt-4">
+    <div class="col-sm-12 col-md-12">
+      <p class="small"><em>"En caso de requerir mayor cantidad de actas registrales adjuntar documento de sustento o resolución municipal"</em></p>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-sm-12 col-md-12 d-flex justify-content-end">
+      <button mat-flat-button color="accent" class="custom-button" [disabled] = "bolProccessing" (click)="abrirModalConfirmacion()">Siguiente</button>
+    </div>
+  </div>
+</form>

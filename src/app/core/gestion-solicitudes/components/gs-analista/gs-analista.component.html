@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-title>
+    {{dataDialog.title}}
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="content">
+      <app-options [label]="'Nombre Analista'"
+                   [options]="dataDialog.options"
+                   (selected)="setAnalista($event)"></app-options>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-stroked-button color="accent" (click)="cancel()">No</button>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="confirm()">Si</button>
+  </mat-card-actions>
+</mat-card>

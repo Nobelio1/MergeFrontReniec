@@ -1,0 +1,33 @@
+.custom-button-add {
+  border: 2px dashed #ff734d;
+  width: 100%;
+  padding: 20px;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+.custom-card-relative {
+  position: relative;
+}
+.custom-button-delete {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: -10px;
+}
+.mat-icon {
+  margin-right: inherit;
+}
+h2 {
+  color: #ea5932;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+}
+.custom-padding-bottom {
+  padding-bottom: 60px;
+  button:first-child {
+    margin-right: 8px;
+  }
+}

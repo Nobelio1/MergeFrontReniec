@@ -1,0 +1,90 @@
+<app-heading [title]="title"></app-heading>
+
+<div class="row mt-3">
+  <div class="col-12">
+
+    <mat-card>
+      <mat-card-content>
+
+        <form [formGroup]="formDetalle">
+          <div class="row">
+            <div class="col-sm-12 col-md-3 mb-2">
+              <label>Código</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput formControlName="codigoOrec" placeholder="Ingrese" autocomplete="off">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-9 mb-2">
+              <label>Oficina Autorizada</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput formControlName="descripcionOrecLarga" placeholder="Ingrese" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12 col-md-12 mb-2">
+              <label>Ubigeo</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput formControlName="ubigeo" placeholder="Ingrese" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+
+        </form>
+
+        <ng-container *ngFor="let item of arrayDetalle; let i = index">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 custom-card-relative">
+              <button mat-mini-fab color="accent" class="custom-button-delete" (click)="btnDeleteDetalle(item)">
+                <mat-icon fontSet="fas" fontIcon="fa-times" matTooltip="Eliminar"></mat-icon>
+              </button>
+              <app-step2-libro-detalle
+                [index]="i + 1"
+                [arrayLenguas]="lengua"
+                [arrayArticulos]="articulo"
+                [setDetalle]="obtenerAtencion.detalleSolicitudLibro[i]"></app-step2-libro-detalle>
+            </div>
+          </div>
+        </ng-container>
+        <div class="row mb-3">
+          <div class="col-sm-12 col-md-12 d-flex justify-content-end">
+            <button mat-stroked-button color="accent" class="custom-button-add" (click)="btnAddDetalle()">
+              <mat-icon fontSet="fas" fontIcon="fa-plus"></mat-icon>
+              Agregar
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <h2>Resultado de Civil</h2>
+          </div>
+        </div>
+
+        <app-upload-file #fileSustento
+                         [addLabel]="'Agregar archivo'"
+                         [textHelp]="'Peso máximo de archivo 1 mb - Formatos: ' + typesAllowed.toString()"
+                         [minRequired]="1"
+                         [maxPermitted]="1"
+                         [fileMaxSize]="1050000"
+                         [fileTypeAllowed]="typesAllowed"
+                         [textRequired]="'Debe adjuntar mínimo 1 archivo'"
+                         [requiredTipoArchivo]="true"
+                         [arrayTipoArchivo]="tipoArchivoSustento"
+                         (doResponseMaxAllowed)="showResponse($event)"
+                         (doRefreshData)="getFilesArray($event)">
+        </app-upload-file>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
+
+<div class="row custom-padding-bottom">
+  <div class="col-sm-12 col-md-12 mt-3 d-flex justify-content-end">
+    <button mat-stroked-button color="accent" (click)="btnCancelar()">Cancelar</button>
+    <button mat-flat-button color="accent" class="ml-2" (click)="btnGrabar()">Grabar</button>
+  </div>
+</div>

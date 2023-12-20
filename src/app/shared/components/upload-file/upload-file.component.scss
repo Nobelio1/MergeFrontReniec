@@ -1,0 +1,56 @@
+.mat-icon {
+  margin-right: inherit;
+}
+.custom-plus-button {
+  margin-right: 5px !important;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  border: 1px solid #FBFBFB;
+}
+.row {
+  align-items: inherit;
+}
+
+mat-form-field.mat-form-field {color: #EA5932;}
+.mat-icon-button {
+  width: 24px;
+  height: 24px;
+  line-height: 20px !important;
+  margin-left: 10px;
+}
+
+.custom-table {
+  display: flex;
+  justify-content: flex-start;
+}
+.custom-table.header {
+  background-color: #366EAF;
+  padding: 10px;
+  color: white;
+}
+.custom-table.content-row {
+  padding: 10px;
+}
+.custom-table.content-row:nth-child(odd) {
+  background-color: #FBFBFB;
+}
+.custom-table .item {
+  width: 60px;
+}
+.custom-table .type {
+  width: 60%;
+  padding: 0 10px;
+}
+.custom-table .name {
+  width: 100%;
+}
+.custom-table .empty {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+}

@@ -1,0 +1,34 @@
+<mat-card>
+  <mat-card-title>
+    {{dataDialog.title}}
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="content">
+
+      <div class="row mt-2">
+        <div class="col-sm-12 col-md-2">Tipo Solicitud</div>
+        <div class="col-sm-12 col-md-2">Nro. Doc.</div>
+        <div class="col-sm-12 col-md-2">Ape. Paterno</div>
+        <div class="col-sm-12 col-md-2">Ape. Materno</div>
+        <div class="col-sm-12 col-md-2">Nombres</div>
+        <div class="col-sm-12 col-md-2">Doc.</div>
+      </div>
+      <div class="row mt-2" *ngFor="let item of dataDialog.files">
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.tipoSolicitud}}</div></div>
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.numeroDocumento}}</div></div>
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.primerApellido}}</div></div>
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.segundoApellido}}</div></div>
+        <div class="col-sm-12 col-md-2"><div class="custom-cell">{{item.preNombres}}</div></div>
+        <div class="col-sm-12 col-md-2">
+          <button tabindex="-1" mat-flat-button color="accent" (click)="download(item.archivoRespuesta.codigo, item.archivoRespuesta.nombreOriginal)">Ver Doc.</button>
+        </div>
+      </div>
+
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="cancel()">Cerrar</button>
+  </mat-card-actions>
+</mat-card>

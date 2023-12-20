@@ -1,0 +1,238 @@
+@import "variables";
+@import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/css/solid.min.css";
+@import 'material-icons/iconfont/material-icons.scss';
+@import "reset";
+/* You can add global styles to this file, and also import other style files */
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+body {
+  background-color: #F7F7F7;
+}
+
+//Custom color text
+.mat-card p,
+.mat-card label,
+.custom-mat-stepper p,
+.custom-mat-stepper label {
+  color: #686666;
+}
+
+.app {height: calc(100vh - 37px);}
+.app.no-header {height: calc(100vh);}
+.mat-toolbar {
+  background-color: map-get($app-primary, 500);
+  color: map-get($app-primary, 500);
+  font-weight: 600;
+}
+//Custom menu
+.mat-drawer {
+  width: 300px;
+  background-color: map-get($app-primary, 500);
+  color: map-get($app-primary, 500, '500-contrast');
+}
+.mat-drawer-container {
+  background-color: map-get($app-primary, 500, '500-contrast');
+  height: calc(100vh);
+}
+
+//Custom Container
+.container {  // For all app
+  padding-top: 120px;
+}
+.intro.container { // For intro / login
+  padding-top: inherit;
+}
+
+//Fix arrow menu of mat-expansion
+.menu-principal .mat-expansion-indicator::after {
+  color: map-get($app-primary, 500, '500-contrast');
+}
+
+//Style for button base
+.mat-button-base {
+  //border-radius: 30px !important;
+}
+
+//Align fontawesome icons in buttons
+.mat-button-base .mat-button-wrapper>* {
+  vertical-align: middle !important;
+}
+.custom-button-add.mat-button-base .mat-button-wrapper > * {
+  vertical-align: inherit !important;
+}
+
+//Custom border button for stroked style
+.mat-stroked-button:not(.mat-button-disabled) {
+  border-color: inherit;
+}
+
+//Fix height for all inputs
+mat-form-field.mat-form-field {
+  font-size: 14px;
+}
+.mat-form-field-wrapper {
+  margin: 0 !important;
+}
+.mat-form-field-infix {
+  padding: 0.5em 0;
+  border-top: 0.25em solid transparent;
+}
+
+// Odd for table
+.gray { background-color: #FBFBFB }
+
+//Align fontawesome icons in expansion panel
+.mat-expansion-panel-header-title, .mat-expansion-panel-header-description {
+  align-items: baseline;
+}
+
+//Back button in forms
+.btn-back {
+  margin-right: 10px !important;
+}
+
+// Mat dialog without padding
+.mat-dialog-container {
+  padding: inherit !important;
+  overflow: inherit !important;
+}
+
+span.text-button-table {
+  display: none;
+}
+
+.range-date button {
+  vertical-align: bottom;
+  width: 1.6em !important;
+  height: 1.6em !important;
+}
+
+//Fix border for input disabled
+.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+  color: rgb(0 0 0 / 12%);
+}
+
+.mat-column-acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+//Fix mat-icon
+.mat-icon {
+  display: inline !important;
+  margin-right: 8px;
+}
+
+//Custom mat-stepper
+.custom-mat-stepper {
+  h2 {
+    color: map-get($app-accent, 500);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 26px;
+  }
+  .mat-step-icon {
+    height: 48px;
+    width: 48px;
+  }
+  .mat-step-header .mat-step-label {
+    font-weight: 600 !important;
+  }
+  .mat-step-header .mat-step-label.mat-step-label-active {
+    //border: 1px solid red !important;
+  }
+  .mat-horizontal-stepper-header-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  .mat-step-header.cdk-keyboard-focused,
+  .mat-step-header.cdk-program-focused,
+  .mat-step-header:hover:not([aria-disabled]),
+  .mat-step-header:hover[aria-disabled=false] {
+    background-color: inherit;
+  }
+  .mat-stepper-horizontal-line {
+    display: none;
+  }
+  .mat-horizontal-stepper-header::after,
+  .mat-horizontal-stepper-header::before {
+    top: 48px !important;
+  }
+  .mat-horizontal-stepper-header:not(:first-child)::before, [dir=rtl] .mat-horizontal-stepper-header:not(:last-child)::before, .mat-horizontal-stepper-header:not(:last-child)::after, [dir=rtl] .mat-horizontal-stepper-header:not(:first-child)::after {
+    width: calc(50% - 24px) !important;
+  }
+  .mat-horizontal-stepper-header::before, .mat-horizontal-stepper-header::after, .mat-stepper-horizontal-line {
+    //border-top-color: red;
+  }
+  .mat-horizontal-stepper-header, .mat-vertical-stepper-header {
+    flex: auto;
+  }
+}
+
+// Custom styles
+.custom-button {
+  padding: 4px 36px !important;
+  font-style: normal;
+  font-size: 16px;
+}
+
+// Fix display label Input file (ngx-mat-file-input) only for outline appearance
+.mat-form-field-appearance-outline span.filename {
+  display: flex !important;
+}
+
+// Custom readonly
+.readonly .mat-form-field-wrapper .mat-form-field-outline {
+  background-color: #D7E1EA;
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 680px) {
+  // MAT-TABLE RESPONSIVE
+  mat-header-row.mat-header-row {
+    display: none;
+  }
+  mat-row, mat-cell {
+    display: block !important;
+  }
+  mat-row.mat-row::after {
+    min-height: auto;
+  }
+  mat-cell {
+    padding: 20px 0 20px 0 !important;
+  }
+  mat-cell:before {
+    display: block;
+    font-weight: 600;
+  }
+  .mat-column-acciones {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    margin-bottom: 15px;
+  }
+  .mat-column-acciones button {
+    margin-bottom: 20px !important;
+  }
+  span.text-button-table {
+    display: flex !important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    justify-content: center;
+    align-content: center;
+  }
+  // MAT-TABLE RESPONSIVE - END
+
+  //MAT-STEP - START
+  .mat-step-text-label {
+    display: none;
+  }
+  //MAT-STEP - END
+}

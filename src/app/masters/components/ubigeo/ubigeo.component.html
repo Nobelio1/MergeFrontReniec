@@ -1,0 +1,23 @@
+<ng-container *ngIf="type; else templateNoType">
+  <form [formGroup]="form">
+    <label>{{label}}: <span *ngIf="required">(*)</span></label>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-select formControlName="sUbigeo" #cbo (selectionChange)="emitUbigeo(cbo.value)" placeholder="-- Seleccione --">
+        <mat-option [value]="">-- Seleccione --</mat-option>
+        <mat-option *ngFor="let item of ubigeo" [value]="item.codigo.trim()">
+          {{item.descripcion | uppercase}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('sUbigeo')?.invalid">{{utilService.getErrorMessage(form,'sUbigeo')}}</mat-error>
+    </mat-form-field>
+  </form>
+</ng-container>
+<ng-template #templateNoType>
+  <mat-error><small>Debe definir el tipo de ubigeo -> [type]</small></mat-error>
+</ng-template>
+<ng-template #templateNoPro>
+  <mat-error><small>Debe enviar un departamento</small></mat-error>
+</ng-template>
+<ng-template #templateNoDis>
+  <mat-error><small>Debe enviar un departamento y provincia</small></mat-error>
+</ng-template>

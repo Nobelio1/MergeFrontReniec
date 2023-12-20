@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <label>Tipo Solicitud</label>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-select formControlName="idTipoSolicitud" #cbo (selectionChange)="emitTipoSolicitud(cbo.value)" placeholder="Seleccione">
+      <mat-option [value]="">-- Seleccione --</mat-option>
+      <mat-option *ngFor="let item of tipoSolicitud" [value]="item.codigo">
+        {{item.descripcion | uppercase}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('idTipoSolicitud')?.invalid">{{utilService.getErrorMessage(form,'idTipoSolicitud')}}</mat-error>
+  </mat-form-field>
+</form>

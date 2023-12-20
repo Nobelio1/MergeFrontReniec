@@ -1,0 +1,104 @@
+<form [formGroup]="form">
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Detalle de Oficina</h2>
+    </div>
+  </div>
+
+  <form [formGroup]="formDetalle">
+    <div class="row">
+      <div class="col-sm-12 col-md-4 mb-2">
+        <label>Departamento</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="nombreDepartamento" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-4 mb-2">
+        <label>Provincia</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="nombreProvincia" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-4 mb-2">
+        <label>Distrito</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="nombreDistrito" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-4 mb-2">
+        <label>Centro Poblado</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="descripcionCentroPoblado" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-8 mb-2">
+        <label>Oficina Autorizada</label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="descripcionLocalLarga" placeholder="Ingrese" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Detalle de la Solicitud de Firma</h2>
+    </div>
+  </div>
+
+  <ng-container *ngFor="let item of arrayDetalle; let i = index">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 custom-card-relative">
+        <button mat-mini-fab color="accent" class="custom-button-delete" (click)="btnDeleteDetalle(item)">
+          <mat-icon fontSet="fas" fontIcon="fa-times" matTooltip="Eliminar"></mat-icon>
+        </button>
+        <app-step2-detalle-solicitud
+          [index]="i + 1"
+          #components
+          [arrayTipoSolicitud]="tipoSolicitud"
+          [arrayTipoArchivoAlta]="tipoArchivoDetalleAlta"
+          [arrayTipoArchivoActualizar]="tipoArchivoDetalleActualizar"></app-step2-detalle-solicitud>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mb-3">
+    <div class="col-sm-12 col-md-12 d-flex justify-content-end">
+      <button mat-stroked-button color="accent" class="custom-button-add" (click)="btnAddDetalle()">
+        <mat-icon fontSet="fas" fontIcon="fa-plus"></mat-icon>
+        Agregar
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h2>Detalle de Sustento</h2>
+    </div>
+  </div>
+
+  <app-upload-file #fileSustento
+                   [addLabel]="'Agregar archivo'"
+                   [textHelp]="'Peso máximo de archivo 1 mb - Formatos: ' + typesAllowed.toString()"
+                   [minRequired]="1"
+                   [maxPermitted]="2"
+                   [fileMaxSize]="1050000"
+                   [fileTypeAllowed]="typesAllowed"
+                   [textRequired]="'Debe adjuntar mínimo 1 archivo'"
+                   [requiredTipoArchivo]="true"
+                   [arrayTipoArchivo]="tipoArchivoSustento"
+                   (doResponseMaxAllowed)="showResponse($event)"
+                   (doRefreshData)="getFilesArray($event)">
+  </app-upload-file>
+
+  <div class="row mt-4">
+    <div class="col-sm-12 col-md-12 d-flex justify-content-end">
+      <button mat-flat-button color="accent" class="custom-button" (click)="abrirModalConfirmacion()">Siguiente</button>
+
+    </div>
+  </div>
+</form>

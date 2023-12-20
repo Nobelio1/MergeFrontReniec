@@ -1,0 +1,29 @@
+.spacer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.custom-user-button {
+  font-size: 1.2rem;
+}
+.custom-user-info {
+  padding: 10px 15px;
+}
+.custom-user-info span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: normal;
+}
+.custom-user-info span:first-child {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 18px;
+  color: #000000;
+}
+.custom-user-info span:last-child {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #686666;
+}

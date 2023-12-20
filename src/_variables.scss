@@ -1,0 +1,23 @@
+// ANGULAR MATERIAL
+@use '@angular/material' as mat;
+@import './palettes';
+@include mat.core();
+
+// THEME
+$app-primary: mat.define-palette($palette-primary);
+$app-accent: mat.define-palette($palette-secondary);
+//$app-warn: mat.define-palette($palette-auxiliar);
+
+$app-typography: mat.define-typography-config(
+  $font-family: 'Roboto',
+);
+$app: mat.define-light-theme((
+  color: (
+    primary: $app-primary,
+    accent: $app-accent,
+    //warn: $app-warn,
+  ),
+  typography: $app-typography,
+));
+
+@include mat.all-component-themes($app);

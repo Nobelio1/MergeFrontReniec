@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-title>
+    {{dataDialog.title}}
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div [class.text-center]="!dataDialog.messageAlign || dataDialog.messageAlign === 'center'"
+         [class.text-justify]="dataDialog.messageAlign === 'justify'"
+         [class.text-right]="dataDialog.messageAlign === 'right'"
+         [class.text-left]="dataDialog.messageAlign === 'left'">
+      <div class="message" [innerHTML]="dataDialog.message"></div>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button tabindex="-1" mat-stroked-button color="accent" (click)="cancel()">No</button>
+    <button tabindex="-1" mat-flat-button color="accent" (click)="confirm()">Si</button>
+  </mat-card-actions>
+</mat-card>

@@ -24,7 +24,6 @@ export class OficinaAutorizadaComponent implements OnInit, OnChanges {
   @Input() idProvincia: string = '';
   @Input() idDistrito: string = '';
   @Input() idCentroPoblado: string = '';
-  @Input() idOficinaAutorizada: string = '';
 
   @Output() oficinaOrecSelected: EventEmitter<string> = new EventEmitter();
 
@@ -52,9 +51,6 @@ export class OficinaAutorizadaComponent implements OnInit, OnChanges {
   validate(): void {
     if (this.idDepartamento || this.idProvincia || this.idDistrito || this.idCentroPoblado) {
       this.requestMapper(this.idDepartamento, this.idProvincia, this.idDistrito, this.idCentroPoblado);
-      if(this.idOficinaAutorizada){
-        this.form.controls['idOficinaAutorizada'].setValue(this.idOficinaAutorizada);
-      }
     } else {
       this.form.controls['idOficinaAutorizada'].setValue('');
       this.oficinasOrec = [];

@@ -40,7 +40,7 @@ import { ValidacionRegCivilModalComponent } from './components/validacion-reg-ci
     AppMaterialModule,
     NgxSpinnerModule,
     SharedModule,
-    MastersModule    
+    MastersModule
   ]
 })
 export class FirmasModule { }

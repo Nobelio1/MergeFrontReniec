@@ -18,10 +18,7 @@ export class MainComponent implements OnInit {
     this.environment = environment;
     this.title = 'Menú';
 
-    // if(!this.seguridadService.getUserInternal()){
-    //   this.seguridadService.clearLocalStorage();
-    // }
-    
+    this.seguridadService.clearLocalStorage();
   }
 
 }

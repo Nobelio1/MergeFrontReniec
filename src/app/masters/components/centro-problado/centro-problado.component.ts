@@ -22,7 +22,6 @@ export class CentroProbladoComponent implements OnInit, OnChanges {
   @Input() idDepartamento: string = '';
   @Input() idProvincia: string = '';
   @Input() idDistrito: string = '';
-  @Input() idCentroPoblado: string = '';
 
   @Output() ubigeoSelected: EventEmitter<string> = new EventEmitter();
 
@@ -49,9 +48,6 @@ export class CentroProbladoComponent implements OnInit, OnChanges {
   validate(): void {
     if (this.idDepartamento && this.idProvincia && this.idDistrito) {
       this.listarCentroPoblado(this.idDepartamento, this.idProvincia, this.idDistrito);
-      if(this.idCentroPoblado){
-        this.form.controls['sUbigeo'].setValue(this.idCentroPoblado);
-      }
     } else {
       this.form.controls['sUbigeo'].setValue('')
       this.ubigeo = [];

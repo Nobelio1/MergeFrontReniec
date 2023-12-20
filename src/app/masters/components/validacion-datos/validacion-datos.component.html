@@ -5,33 +5,65 @@
     </div>
     <div class="right">
       <form [formGroup]="form">
-
         <div class="row">
           <div class="col-sm-12 col-md-4 mb-2">
             <label>DNI: <span>(*)</span></label>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput formControlName="nroDni" placeholder="Ingresar" autocomplete="off" pattern="[0-9]{8}" maxlength="8" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
-              <mat-error *ngIf="form.get('nroDni')?.invalid">{{utilService.getErrorMessage(form,'nroDni')}}</mat-error>
+              <input
+                matInput
+                formControlName="nroDni"
+                placeholder="Ingresar"
+                autocomplete="off"
+                pattern="[0-9]{8}"
+                maxlength="8"
+                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+              />
+              <mat-error *ngIf="form.get('nroDni')?.invalid">{{
+                utilService.getErrorMessage(form, "nroDni")
+              }}</mat-error>
             </mat-form-field>
           </div>
 
-          <div class="col-sm-12 col-md-4 mb-2" *ngIf="isExternal">
+          <div class="col-sm-12 col-md-4 mb-2">
             <label>Dígito de Verificación: <span>(*)</span></label>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput formControlName="digito" type="number" placeholder="Ingresar" autocomplete="off">
-              <mat-error *ngIf="form.get('digito')?.invalid">{{utilService.getErrorMessage(form,'digito')}}</mat-error>
+              <input
+                matInput
+                formControlName="digito"
+                type="number"
+                placeholder="Ingresar"
+                autocomplete="off"
+              />
+              <mat-error *ngIf="form.get('digito')?.invalid">{{
+                utilService.getErrorMessage(form, "digito")
+              }}</mat-error>
             </mat-form-field>
           </div>
 
-          <div class="col-sm-12 col-md-4 mb-2" *ngIf="isExternal">
+          <div class="col-sm-12 col-md-4 mb-2">
             <label>Fecha de Emisión del DNI: <span>(*)</span></label>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput formControlName="fechaEmision" [matDatepicker]="fechaEmision" readonly [max]="dateNow" placeholder="Seleccione" autocomplete="off">
+              <input
+                matInput
+                formControlName="fechaEmision"
+                [matDatepicker]="fechaEmision"
+                readonly
+                [max]="dateNow"
+                placeholder="Seleccione"
+                autocomplete="off"
+              />
               <mat-datepicker-toggle matSuffix [for]="fechaEmision">
-                <mat-icon matDatepickerToggleIcon fontSet="fas" fontIcon="fa-calendar-day" class="clean-button"></mat-icon>
+                <mat-icon
+                  matDatepickerToggleIcon
+                  fontSet="fas"
+                  fontIcon="fa-calendar-day"
+                  class="clean-button"
+                ></mat-icon>
               </mat-datepicker-toggle>
               <mat-datepicker #fechaEmision disabled="false"></mat-datepicker>
-              <mat-error *ngIf="form.get('fechaEmision')?.invalid">{{utilService.getErrorMessage(form,'fechaEmision')}}</mat-error>
+              <mat-error *ngIf="form.get('fechaEmision')?.invalid">{{
+                utilService.getErrorMessage(form, "fechaEmision")
+              }}</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -39,25 +71,79 @@
         <ng-container *ngIf="paraSeguimiento">
           <div class="row">
             <div class="col-sm-12 col-md-4 mb-2">
-              <label>Número de Solicitud:</label>
+              <label>Número de Solicitud: <span>(*)</span></label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput formControlName="numeroSolicitud" placeholder="Ingresar" autocomplete="off">
-                <mat-error *ngIf="form.get('numeroSolicitud')?.invalid">{{utilService.getErrorMessage(form,'numeroSolicitud', 12, 12, true)}}</mat-error>
+                <input
+                  matInput
+                  formControlName="numeroSolicitud"
+                  placeholder="Ingresar"
+                  autocomplete="off"
+                  (input)="actualizarEstadoRangoFecha()"
+                />
+                <mat-error *ngIf="form.get('numeroSolicitud')?.invalid">{{
+                  utilService.getErrorMessage(
+                    form,
+                    "numeroSolicitud",
+                    12,
+                    12,
+                    true
+                  )
+                }}</mat-error>
               </mat-form-field>
             </div>
             <div class="col-sm-12 col-md-4 mb-2">
-              <label>Rango de fechas:</label>
+              <label>Rango de fecha</label>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-date-range-input [rangePicker]="picker" formGroupName="dateRange" [disabled]="disabledRange">
-                  <input matInput matStartDate formControlName="start"  placeholder="Fecha inicial" readonly autocomplete="off" (dateChange)="changeDateRange()">
-                  <input matInput matEndDate formControlName="end" placeholder="Fecha final" readonly autocomplete="off" (dateChange)="changeDateRange()">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input
+                    matStartDate
+                    formControlName="fechaInicio"
+                    placeholder="Desde"
+                    [disabled]="!rangoFechaActivo"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="fechaFin"
+                    placeholder="Hasta"
+                    [disabled]="!rangoFechaActivo"
+                    [max]="dateNow"
+                  />
                 </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker-toggle matSuffix (click)="clearRangeDate()" *ngIf="this.form.get('dateRange')?.get('start')?.value || this.form.get('dateRange')?.get('end')?.value">
-                  <mat-icon matDatepickerToggleIcon fontSet="fas" fontIcon="fa-times"></mat-icon>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                  [disabled]="!rangoFechaActivo"
+                >
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-calendar-day"
+                  ></mat-icon>
                 </mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-                <mat-error *ngIf="form.get('dateRange')?.get('end')?.hasError('maxRange')"> {{ rangeMaxMessage }} </mat-error>
+                <mat-datepicker-toggle
+                  matSuffix
+                  (click)="clearDate(['fechaInicio', 'fechaFin'])"
+                  *ngIf="
+                    form.controls['fechaInicio']?.value ||
+                    form.controls['fechaFin']?.value
+                  "
+                >
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-times"
+                  ></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-date-range-picker
+                  #picker
+                  color="accent"
+                ></mat-date-range-picker>
+                <mat-error *ngIf="form.get('fechaInicio')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaInicio")
+                }}</mat-error>
+                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaFin")
+                }}</mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -68,7 +154,6 @@
             <mat-hint>(*) Datos obligatorios</mat-hint>
           </div>
         </div>
-
       </form>
     </div>
   </mat-card-content>

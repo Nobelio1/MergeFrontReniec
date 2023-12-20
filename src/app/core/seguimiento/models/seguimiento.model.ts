@@ -5,15 +5,11 @@ export class ValidarDatosIn {
   dni: string;
   fechaEmision: string;
   numeroSolicitud: string;
-  fechaIni: string;
-  fechaFin: string;
   constructor() {
     this.digitoVerifica = '';
     this.dni = '';
     this.fechaEmision = '';
     this.numeroSolicitud = '';
-    this.fechaIni = '';
-    this.fechaFin = '';
   }
 }
 

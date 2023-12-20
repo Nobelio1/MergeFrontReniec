@@ -1,4 +1,4 @@
-import {Result} from "../../../masters/models/result.model";
+import { Result } from '../../../masters/models/result.model';
 
 export class ValidarDatosIn {
   datosOficina: DatosOficina;
@@ -14,6 +14,15 @@ export class ValidarDatosOut extends Result {
   constructor() {
     super();
     this.data = '';
+  }
+}
+
+export class ConsultarData {
+  estadoRegistrador: string;
+  descripcionOrec: string;
+  constructor() {
+    this.descripcionOrec = '';
+    this.estadoRegistrador = '';
   }
 }
 
@@ -44,19 +53,35 @@ export class RegistroFirmaOut extends Result {
 }
 
 export class RegistroFirmaIn {
-  archivoSustento: Archivo;
-  codigoTipoArchivoSustento: string;
+  listArchivoSustento: Sustento[];
   email: string;
   celular: string;
   codigoModoRegistro: string;
   detalleSolicitud: DetalleSolicitud[];
   constructor() {
-    this.archivoSustento = new Archivo();
-    this.codigoTipoArchivoSustento = '';
+    this.listArchivoSustento = new Array<Sustento>();
     this.email = '';
     this.celular = '';
     this.codigoModoRegistro = '';
     this.detalleSolicitud = new Array<DetalleSolicitud>();
+  }
+}
+
+export class Sustento {
+  codigoNombre: string;
+  tipoCodigoNombre: string;
+  idArchivo?: string;
+  constructor() {
+    this.codigoNombre = '';
+    this.tipoCodigoNombre = '';
+    this.idArchivo = '';
+  }
+}
+
+export class Codigo {
+  codigo: string;
+  constructor() {
+    this.codigo = '';
   }
 }
 
@@ -97,20 +122,17 @@ export class DetalleSolicitud {
   }
 }
 
-export interface OficinaUbigeo {
-  codigoOrec: string;
-  descripcionLocalLarga: string;
-  descripcionLocalCorta: string;
-  descripcionUbigeo: string;
-  descripcionUbigeoDetalle: string;
-  codigoDepartamento: string;
-  codigoProvincia: string;
-  codigoDistrito: string;
-  codigoCentroPoblado: string;
-  nombreDepartamento: string;
-  nombreProvincia: string;
-  nombreDistrito: string;
-  descripcionCentroPoblado: string;
+export class ConsultarRuipinIn {
+  dni: string;
+  constructor() {
+    this.dni = '';
+  }
 }
 
-
+export class ConsultarRuipinOut extends Result {
+  data: string;
+  constructor() {
+    super();
+    this.data = '';
+  }
+}

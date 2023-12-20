@@ -34,21 +34,6 @@ mat-hint {
   }
 }
 
-::ng-deep
-.mat-form-field-infix {
-  display: flex !important;
-  flex-direction: row;
-  height: 45px;
-  button {
-    margin-top: -20px;
-  }
-}
-
-::ng-deep
-.mat-form-field-suffix {
-  top: 0 !important;
-}
-
 @media screen and (max-width: 959px) {
   .mat-card-content {
     .left {

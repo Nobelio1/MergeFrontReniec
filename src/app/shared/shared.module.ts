@@ -14,8 +14,6 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
 import {MaterialFileInputModule} from "ngx-material-file-input";
 import {GsAnalistaComponent} from "../core/gestion-solicitudes/components/gs-analista/gs-analista.component";
-import { RecaptchaComponent } from './components/recaptcha/recaptcha.component';
-import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -26,8 +24,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     HeadingComponent,
     AlertComponent,
     ConfirmationComponent,
-    UploadFileComponent,
-    RecaptchaComponent
+    UploadFileComponent
   ],
     imports: [
         CommonModule,
@@ -35,8 +32,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
         AppMaterialModule,
         RouterModule,
         ReactiveFormsModule,
-        MaterialFileInputModule,
-        RecaptchaModule
+        MaterialFileInputModule
     ],
   exports: [
     HeaderComponent,
@@ -47,7 +43,6 @@ import { RecaptchaModule } from 'ng-recaptcha';
     AlertComponent,
     ConfirmationComponent,
     UploadFileComponent,
-    RecaptchaComponent
   ]
 })
 export class SharedModule { }

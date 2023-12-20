@@ -1,22 +1,75 @@
 <div class="spacer">
   <div>
-    <button mat-button [routerLink]="environment.URL_MENU">Menú</button>
-    <button mat-button [routerLink]="environment.URL_MOD_FIRMAS">Registro de Firmas</button>
-    <button mat-button [routerLink]="environment.URL_MOD_ACTAS_REGISTRALES">Libro de Actas Registrales</button>
-    <button mat-button [routerLink]="environment.URL_MOD_SEGUIMIENTO">Seguimiento</button>
-    <button mat-button *ngIf="esInternal()" [routerLink]="environment.URL_MOD_GESTION_SOLICITUDES">Gestión de Solicitudes</button>
-    <button mat-button [routerLink]="environment.URL_MOD_REPORTES">Reportes</button>
+    <button mat-button *ngIf="esExternal()" [routerLink]="environment.URL_MENU">
+      Menú
+    </button>
+    <button
+      mat-button
+      *ngIf="esExternal()"
+      [routerLink]="environment.URL_MOD_FIRMAS"
+    >
+      Registro de Firmas
+    </button>
+    <button
+      mat-button
+      *ngIf="esExternal()"
+      [routerLink]="environment.URL_MOD_ACTAS_REGISTRALES"
+    >
+      Libro de Actas Registrales
+    </button>
+    <button
+      mat-button
+      *ngIf="esExternal()"
+      [routerLink]="environment.URL_MOD_SEGUIMIENTO"
+    >
+      Seguimiento
+    </button>
+    <button
+      mat-button
+      *ngIf="esInternal()"
+      [routerLink]="environment.URL_MOD_GESTION_SOLICITUDES"
+    >
+      Gestión de Solicitudes
+    </button>
+    <button
+      mat-button
+      *ngIf="esInternal()"
+      [routerLink]="environment.URL_MOD_REPORTES_EXCEL"
+    >
+      Reportes
+    </button>
+    <button
+      mat-button
+      *ngIf="esInternal()"
+      [routerLink]="environment.URL_MOD_REPORTES_DETALLE"
+    >
+      Reportes Detalle
+    </button>
+    <button
+      mat-button
+      *ngIf="esExternal()"
+      [routerLink]="environment.URL_MOD_REPORTES"
+    >
+      Reportes
+    </button>
   </div>
 
   <div>
-    <button mat-button class="custom-user-button" [matMenuTriggerFor]="userMenu">
+    <button
+      mat-button
+      class="custom-user-button"
+      [matMenuTriggerFor]="userMenu"
+    >
       <mat-icon fontSet="fas" fontIcon="fa-user-circle"></mat-icon>
       <mat-icon fontSet="fas" fontIcon="fa-chevron-down"></mat-icon>
     </button>
     <mat-menu #userMenu="matMenu" xPosition="before">
       <div class="custom-user-info">
-        <span>{{user?.preNombre | titlecase}} {{user?.primerApellido | titlecase}}</span>
-        <span>{{user?.dni}}</span>
+        <span
+          >{{ user?.preNombre | titlecase }}
+          {{ user?.primerApellido | titlecase }}</span
+        >
+        <span>{{ user?.dni }}</span>
       </div>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="logout()">

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import { OficinaDetalleOut, OficinaOrecIn, OficinaOrecOut} from "../models/oficina.model";
-import { Observable } from 'rxjs';
-import { OficinaUbigeo } from 'src/app/core/firmas/models/firmas.model';
+import {OficinaDetalleOut, OficinaOrecIn, OficinaOrecOut} from "../models/oficina.model";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +20,4 @@ export class OficinaService {
   listOficinaDetalle() {
     return this.http.get<OficinaDetalleOut>(`${this.url}/orec/detalle`);
   }
-
-  getOficinaDetalleUbigeo(): Observable<OficinaUbigeo> {
-    return this.http.get<OficinaUbigeo>(`${this.url}/orec/detalleUbigeo`);
-  }
-
 }

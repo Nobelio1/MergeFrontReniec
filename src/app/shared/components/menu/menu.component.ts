@@ -18,8 +18,7 @@ export class MenuComponent implements OnInit {
   subUser!: Subscription;
 
   constructor(public utilService: UtilService,
-              private seguridadService: SeguridadService
-              ) {
+              private seguridadService: SeguridadService) {
     this.subUser = this.seguridadService.getObsUser().subscribe((data: User) => {
       this.user = data;
     });

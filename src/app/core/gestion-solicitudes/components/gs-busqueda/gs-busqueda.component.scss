@@ -54,7 +54,7 @@ button.button-custom-search {
 
 .mat-column-nroSolicitud {
   flex: 0 0 10%;
-  padding: 0 7px;
+  padding: 0 15px;
 }
 .mat-column-fechaRegistro,
 .mat-column-fechaRecepcion,
@@ -64,7 +64,7 @@ button.button-custom-search {
   padding: 7px;
 }
 .mat-column-tipoRegistro {
-  flex: 0 0 9%;
+  flex: 0 0 10%;
   padding: 7px;
 }
 .mat-column-oficinaAutorizada,
@@ -73,7 +73,7 @@ button.button-custom-search {
   padding: 7px;
 }
 .mat-column-estado {
-  flex: 0 0 9%;
+  flex: 0 0 10%;
   padding: 7px;
 }
 .mat-column-select {
@@ -83,7 +83,6 @@ button.button-custom-search {
 }
 .mat-column-acciones {
   //justify-content: flex-end;
-  padding: 0 0.5px;
 }
 
 .custom-row {

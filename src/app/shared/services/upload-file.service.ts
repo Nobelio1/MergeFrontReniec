@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-import {environment} from '../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {DeleteOut, GetFileOut, UploadOut} from '../models/upload-file.model';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { DeleteOut, GetFileOut, UploadOut } from '../models/upload-file.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UploadFileService {
-
   private _urlService = environment.API_MASTER;
   url = `${this._urlService}/archivos`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  upload(formData: any): Observable<UploadOut>{
+  upload(formData: any): Observable<UploadOut> {
     return this.http.post<UploadOut>(`${this.url}/upload`, formData);
   }
 
-  delete(idFile: string): Observable<DeleteOut>{
+  delete(idFile: string): Observable<DeleteOut> {
     return this.http.delete<DeleteOut>(`${this.url}/${idFile}`);
   }
 

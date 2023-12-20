@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {GsBusquedaComponent} from "./components/gs-busqueda/gs-busqueda.component";
-import {GsDashboardComponent} from "./components/gs-dashboard/gs-dashboard.component";
-import {GuardianUserInternalGuard} from "../../shared/guards/guardian-user-internal.guard";
-import {GsAtencionComponent} from "./components/gs-atencion/gs-atencion.component";
+import { GsBusquedaComponent } from './components/gs-busqueda/gs-busqueda.component';
+import { GsDashboardComponent } from './components/gs-dashboard/gs-dashboard.component';
+import { GuardianUserInternalGuard } from '../../shared/guards/guardian-user-internal.guard';
+import { GsAtencionComponent } from './components/gs-atencion/gs-atencion.component';
 
 const routes: Routes = [
   {
@@ -13,24 +13,24 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'busqueda',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'busqueda',
         component: GsBusquedaComponent,
-        canActivate: [GuardianUserInternalGuard]
+        canActivate: [GuardianUserInternalGuard],
       },
       {
         path: 'atencion/:id',
         component: GsAtencionComponent,
-        canActivate: [GuardianUserInternalGuard]
+        canActivate: [GuardianUserInternalGuard],
       },
-    ]
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class GestionSolicitudesRoutingModule { }
+export class GestionSolicitudesRoutingModule {}

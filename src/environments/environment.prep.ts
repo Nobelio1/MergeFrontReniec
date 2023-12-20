@@ -1,13 +1,12 @@
 export const environment = {
-  production: false,
+  production: true,
 
   API_AUTH: 'https://servicesdemo.reniec.gob.pe',
   // API_MASTER: 'http://10.48.60.13:7010/api-plataforma-electronica',
-  API_MASTER: 'https://portalproyectos.reniec.gob.pe/api-plataforma-electronica',
+  API_MASTER:
+    'https://portalproyectos.reniec.gob.pe/api-plataforma-electronica',
 
-  jwtDomainsTokenized: [
-    'portalproyectos.reniec.gob.pe',
-  ],
+  jwtDomainsTokenized: ['portalproyectos.reniec.gob.pe'],
 
   // TOKENS
   VAR_TOKEN: 'access_token',
@@ -35,8 +34,8 @@ export const environment = {
   CODE_999: '999',
 
   // PAGINATION
-  ROWS_PAGE: 10,  // Filas por página
-  START_PAGE: 1,  // Página inicial
+  ROWS_PAGE: 10, // Filas por página
+  START_PAGE: 1, // Página inicial
 
   // TIPO DE ARCHIVO
   TIPO_ARCHIVO_FIRMA_SUSTENTO: '01',
@@ -77,7 +76,5 @@ export const environment = {
   URL_MOD_GESTION_SOLICITUDES_ATENCION: '/gestion-solicitudes/atencion',
   URL_MOD_REPORTES: '/reportes',
   URL_MOD_REPORTES_EXCEL: '/reportes/excel',
-
-  //RE CAPTCHA
-  SITE_KEY_RECAPTCHA : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+  URL_MOD_REPORTES_REPORTES_EXCEL: '/reportes-excel',
 };

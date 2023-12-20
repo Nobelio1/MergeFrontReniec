@@ -1,63 +1,293 @@
-<app-header></app-header>
+<app-heading [title]="title"></app-heading>
 
+<div class="row mt-3 custom-padding-bottom">
+  <div class="col-12">
+    <mat-card>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-12">
+            <h3>Buscar / Generar de Reportes</h3>
+          </div>
+        </div>
+        <form [formGroup]="form">
+          <div class="row">
+            <div class="col-sm-12 col-md-3">
+              <!-- DROPBOX TIPO DE REGISTRO FIRMA/LIRO -->
+              <app-options
+                #cboTipoRegistro
+                [label]="'Tipo de Registro'"
+                [options]="tipoRegistro"
+                [optionSelect]="!esAnalista()"
+                [select]="
+                  esAnalista() ? environment.TIPO_REGISTRO_LIBRO_ID : ''
+                "
+                (selected)="setTipoRegistro($event)"
+              ></app-options>
+            </div>
+            <!-- ESTADO DE SOLITUD -->
+            <div class="col-sm-12 col-md-3">
+              <app-options
+                #cboEstadoSolicitud
+                [label]="'Estado Solicitud'"
+                [options]="estadoSolicitud"
+                [select]="codigoEstado"
+                [optionSelect]="false"
+                (selected)="setEstadoSolicitud($event)"
+              ></app-options>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-4">
+              <!-- RANGO DE FECHA -->
+              <mat-label>Rango de fecha de búsqueda</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input
+                    matStartDate
+                    formControlName="fechaIni"
+                    placeholder="Desde"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="fechaFin"
+                    placeholder="Hasta"
+                  />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-calendar-day"
+                  ></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle
+                  matSuffix
+                  (click)="clearDate(['fechaIni', 'fechaFin'])"
+                  *ngIf="
+                    form.controls['fechaIni']?.value ||
+                    form.controls['fechaFin']?.value
+                  "
+                >
+                  <mat-icon
+                    matDatepickerToggleIcon
+                    fontSet="fas"
+                    fontIcon="fa-times"
+                  ></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-date-range-picker
+                  #picker
+                  color="accent"
+                ></mat-date-range-picker>
 
+                <mat-error *ngIf="form.get('fechaIni')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaIni")
+                }}</mat-error>
+                <mat-error *ngIf="form.get('fechaFin')?.invalid">{{
+                  utilService.getErrorMessage(form, "fechaFin")
+                }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <!-- SOLICTUDES POR OFICINA AUTORIZADA -->
+            <div class="col-sm-12 col-md-5">
+              <app-oficina-autorizada
+                #cboOficinaAutorizada
+                (oficinaOrecSelected)="getOficinaAutorizada($event)"
+              ></app-oficina-autorizada>
+            </div>
+          </div>
+          <div class="row">
+            <!-- COMOPONENTE SOLICITANTE -->
+            <div class="col-sm-12 col-md-2 d-flex">
+              <div class="mx-2">
+                <p>Solicitante</p>
+              </div>
+              <div>
+                <label>Dni:</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Ingrese" autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div>
+                <label>Ape. paterno</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Ingrese" autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div>
+                <label>Ape. paterno</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Ingrese" autocomplete="off" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- COMOPONENTE ANALISTA -->
+            <div class="col-sm-12 col-md-2 d-flex">
+              <div class="mx-2">
+                <p>Analista</p>
+              </div>
+              <div>
+                <label>Dni:</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Ingrese" autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div>
+                <label>Ape. paterno</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Ingrese" autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div>
+                <label>Ape. paterno</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Ingrese" autocomplete="off" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- RESULTADO -->
+        <div class="row">
+          <div class="col-12">
+            <h3>Resultado</h3>
+          </div>
+        </div>
+        <ng-container *ngIf="length <= 0">
+          <div class="row">
+            <div class="col-12 text-center">
+              <strong>{{ message }}</strong>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="length >= 1">
+          <div class="row">
+            <div class="col-12">
+              <mat-table [dataSource]="dataResult">
+                <ng-container matColumnDef="nroSolicitud">
+                  <mat-header-cell *matHeaderCellDef>
+                    N° Solicitud
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.numeroSolicitud }}
+                  </mat-cell>
+                </ng-container>
 
-  <br><br><br><br><br>
+                <ng-container matColumnDef="fechaRegistro">
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Trámite
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaSolicitud }}
+                  </mat-cell>
+                </ng-container>
 
-  <div class="filtros">
-    <div class="filtro">
-      <label for="tipoSolicitud" class="filtro-label">Tipo Solicitud:</label>
-      <input type="checkbox" id="tipoSolicitud" class="tipo-solicitud-checkbox"> Registro
-      <input type="checkbox" id="tipoSolicitud" class="tipo-solicitud-checkbox"> Libro
-    </div>
-    <div class="filtro">
-      <label for="rangoFecha" class="filtro-label">Rango de Fecha:</label>
-      <input type="date" id="rangoFecha" class="input-field">
-      <label for="estado" class="filtro-label">Estado:</label>
-      <select id="estado" class="input-field">
-        <option value="pendiente">Pendiente</option>
-        <option value="atendido">Atendido</option>
-        <option value="rechazado">Rechazado</option>
-      </select>
-    </div>
-    <div class="filtro">
-      <label for="solicitante" class="filtro-label">Solicitante:</label>
-      <input type="text" id="solicitante" class="input-field" placeholder="Buscar solicitante...">
-      <button class="btn-buscar">Buscar</button>
-    </div>
-    <div class="filtro">
-      <label for="analista" class="filtro-label">Analista:</label>
-      <input type="text" id="analista" class="input-field" placeholder="Buscar analista...">
-      <button class="btn-buscar">Buscar</button>
-    </div>
+                <ng-container matColumnDef="tipoRegistro">
+                  <mat-header-cell *matHeaderCellDef>
+                    Tipo Registro
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.tipoRegistro }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="oficinaAutorizada">
+                  <mat-header-cell *matHeaderCellDef>
+                    Oficina Autorizada
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.oficinaAutorizada }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaRecepcion">
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Recepción
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaRecepcion }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaAsignacion">
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Asignación
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaAsignacion }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaAtencion">
+                  <mat-header-cell *matHeaderCellDef>
+                    Fecha Atención
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.fechaAtencion }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="analistaAsignado">
+                  <mat-header-cell *matHeaderCellDef>
+                    Analista Asignado
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.analistaAsignado }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="estado">
+                  <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element?.estadoSolicitud }}
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                  *matHeaderRowDef="displayedColumns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: displayedColumns; let odd = odd"
+                  [ngClass]="{ gray: odd }"
+                ></mat-row>
+              </mat-table>
+
+              <mat-paginator
+                [pageSizeOptions]="[10, 20]"
+                [length]="busquedaOut.totalElements"
+                [pageSize]="busquedaIn.size"
+                [pageIndex]="busquedaOut.page"
+                (page)="getListaBusqueda($event)"
+                showFirstLastButtons
+              >
+              </mat-paginator>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12 col-md-12 mt-3 d-flex justify-content-end">
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="form.controls['codigoEstado'].value !== '1'"
+              >
+                Recepcionar
+              </button>
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="form.controls['codigoEstado'].value !== '2'"
+                class="ml-2"
+              >
+                Asignar
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <table class="grilla-reporte">
-    <thead>
-      <tr>
-        <th>Tipo Solicitud</th>
-        <th>Rango de Fecha</th>
-        <th>Estado</th>
-        <th>Solicitante</th>
-        <th>Analista</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Registro</td>
-        <td>01/08/2023 - 15/08/2023</td>
-        <td>Pendiente</td>
-        <td>Juan Pérez</td>
-        <td>María Rodríguez</td>
-      </tr>
-      <!-- Más filas de datos aquí -->
-    </tbody>
-  </table>
-  <div class="botones">
-    <button class="btn-exportar">Exportar a Excel</button>
-    <button class="btn-generar">Generar Reporte</button>
-  </div>
-  <div class="pagination">
-    <span class="page-number">Página 1</span>
-    <span class="page-number">Página 2</span>
-    <!-- Agregar más números de página según sea necesario -->
-  </div>
+</div>

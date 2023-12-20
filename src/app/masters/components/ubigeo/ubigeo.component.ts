@@ -24,7 +24,6 @@ export class UbigeoComponent implements OnInit, OnChanges {
   @Input() type: string = '';
   @Input() idDepartamento: string = '';
   @Input() idProvincia: string = '';
-  @Input() idDistrito: string = '';
 
   @Output() ubigeoSelected: EventEmitter<string> = new EventEmitter();
   @Input() reset: boolean = false;
@@ -61,9 +60,9 @@ export class UbigeoComponent implements OnInit, OnChanges {
       case 'DEP':
         this.label = 'Departamento';
         this.listarDep();
-        if(this.idDepartamento) {
-          this.form.controls['sUbigeo'].setValue(this.idDepartamento);
-        }
+        // if (this.selectEmpty) {
+        //   this.form.controls['sUbigeo'].setValue('');
+        // }
         break;
       case 'PRO':
         this.label = 'Provincia';
@@ -74,10 +73,6 @@ export class UbigeoComponent implements OnInit, OnChanges {
         if (this.idDepartamento) {
           this.listarPro(this.idDepartamento);
           this.form.controls['sUbigeo'].setValue('');
-        }
-
-        if(this.idProvincia) {
-          this.form.controls['sUbigeo'].setValue(this.idProvincia);
         }
         break;
       case 'DIS':
@@ -93,9 +88,6 @@ export class UbigeoComponent implements OnInit, OnChanges {
         if (this.idDepartamento && this.idProvincia) {
           this.listarDis(this.idDepartamento, this.idProvincia);
           this.form.controls['sUbigeo'].setValue('');
-        }
-        if(this.idDistrito) {
-          this.form.controls['sUbigeo'].setValue(this.idDistrito);
         }
         break;
     }

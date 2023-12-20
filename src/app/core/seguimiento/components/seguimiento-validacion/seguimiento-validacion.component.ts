@@ -21,7 +21,6 @@ export class SeguimientoValidacionComponent implements OnInit {
 
   @ViewChild('formValidacionDatos') formValidacionDatos!: ValidacionDatosComponent;
 
-  noSoyRobot: boolean = false;
   constructor(public utilService: UtilService,
               private seguimientoService: SeguimientoService,
               private seguridadService: SeguridadService) { }
@@ -33,7 +32,7 @@ export class SeguimientoValidacionComponent implements OnInit {
   start(): void {
     // ACCESS TO DATA OF COMPONENTS CHILDS
     const formDatosPersona = this.formValidacionDatos.form.getRawValue();
-    console.log('formDatosPersona = ', formDatosPersona);
+
     if (this.formValidacionDatos.form.invalid) {
       this.formValidacionDatos.form.markAllAsTouched();
       this.utilService.getAlert('Aviso', 'Debe completar la validación de datos.');
@@ -47,9 +46,7 @@ export class SeguimientoValidacionComponent implements OnInit {
     this.validarDatosIn.fechaEmision = formDatosPersona.fechaEmision ? formatDate(formDatosPersona.fechaEmision, 'yyyy-MM-dd', 'EN') : '';
     this.validarDatosIn.digitoVerifica = formDatosPersona.digito;
     this.validarDatosIn.numeroSolicitud = formDatosPersona.numeroSolicitud;
-    this.validarDatosIn.fechaIni = formDatosPersona.dateRange.start ? formatDate(formDatosPersona.dateRange.start, 'yyyy-MM-dd', 'EN') : '';
-    this.validarDatosIn.fechaFin = formDatosPersona.dateRange.end ? formatDate(formDatosPersona.dateRange.end, 'yyyy-MM-dd', 'EN') : '';
-    
+
     // CALL SERVICE
     this.seguimientoService.validarDatos(this.validarDatosIn).subscribe((data: ValidarDatosOut) => {
       this.validarDatosOut = data;
@@ -59,23 +56,13 @@ export class SeguimientoValidacionComponent implements OnInit {
         this.utilService.getAlert(`Aviso:`, `${this.validarDatosOut.message}`);
         return;
       }
-      if(this.isExternal){
-        this.seguridadService.setToken(this.environment.VAR_TOKEN_EXTERNAL, this.validarDatosOut.data);
-      }      
+      this.seguridadService.setToken(this.environment.VAR_TOKEN_EXTERNAL, this.validarDatosOut.data);
       this.utilService.link(environment.URL_MOD_SEGUIMIENTO_BUSQUEDA);
     });
   }
 
   back(): void {
     this.utilService.link(environment.URL_MENU);
-  }
-
-  resolveCaptcha(resolved: boolean) {
-    this.noSoyRobot = resolved;
-  }
-
-  get isExternal(): boolean {
-    return !this.seguridadService.getUserInternal();
   }
 
 }

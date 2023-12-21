@@ -13,6 +13,10 @@
 </div>
 
 <div class="row">
+  <app-recaptcha (resolveEvent)="resolveCaptcha($event)"></app-recaptcha>
+</div>
+
+<div class="row">
   <div class="col-12 d-flex justify-content-end">
     <button tabindex="-1" mat-stroked-button color="accent" (click)="back()">
       Regresar
@@ -23,6 +27,7 @@
       color="accent"
       (click)="verificar()"
       class="mx-2"
+      [disabled]="!noSoyRobot"
     >
       Iniciar
     </button>

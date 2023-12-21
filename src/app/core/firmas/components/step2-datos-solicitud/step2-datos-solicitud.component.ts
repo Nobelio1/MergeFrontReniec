@@ -50,6 +50,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { SeguridadService } from 'src/app/shared/services/seguridad.service';
 
 export interface Detalle {
   index: number;
@@ -121,7 +122,8 @@ export class Step2DatosSolicitudComponent implements OnInit {
     private registroFirmasService: RegistroFirmasService,
     private maestroService: MaestrosService,
     private oficinaService: OficinaService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private seguridadService: SeguridadService
   ) {}
 
   abrirModalConfirmacion() {
@@ -313,7 +315,11 @@ export class Step2DatosSolicitudComponent implements OnInit {
     this.registroFirmaIn.listArchivoSustento = archivoSustento;
     this.registroFirmaIn.email = this.requestPaso1.email;
     this.registroFirmaIn.celular = this.requestPaso1.celular;
-    this.registroFirmaIn.codigoModoRegistro = 'E';
+    if (this.isExternal) {
+      this.registroFirmaIn.codigoModoRegistro = 'I';
+    } else {
+      this.registroFirmaIn.codigoModoRegistro = 'E';
+    }
     this.registroFirmaIn.detalleSolicitud = arrayDetalle;
 
     this.registroFirmasService.registroFirma(this.registroFirmaIn).subscribe(
@@ -399,5 +405,9 @@ export class Step2DatosSolicitudComponent implements OnInit {
         }
       }
     );
+  }
+
+  get isExternal(): boolean {
+    return !this.seguridadService.getUserInternal();
   }
 }

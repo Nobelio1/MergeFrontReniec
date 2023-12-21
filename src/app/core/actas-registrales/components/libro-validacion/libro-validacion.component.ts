@@ -44,6 +44,8 @@ export class LibroValidacionComponent implements OnInit {
   @ViewChild('formDatosOficinaAutorizada')
   formDatosOficinaAutorizada!: DatosOficinaAutorizadaComponent;
 
+  noSoyRobot: boolean = false;
+
   constructor(
     public utilService: UtilService,
     private registroLibroService: RegistroLibroService,
@@ -167,5 +169,13 @@ export class LibroValidacionComponent implements OnInit {
 
   back(): void {
     this.utilService.link(environment.URL_MENU);
+  }
+
+  resolveCaptcha(resolved: boolean) {
+    this.noSoyRobot = resolved;
+  }
+
+  get isExternal(): boolean {
+    return !this.seguridadService.getUserInternal();
   }
 }

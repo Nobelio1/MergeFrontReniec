@@ -52,6 +52,9 @@ import {
   Sustento,
 } from '../../models/libro.model';
 import { RegistroLibroService } from '../../services/registro-libro.service';
+import { SeguridadService } from 'src/app/shared/services/seguridad.service';
+import { ConfirmationModalComponent } from 'src/app/core/firmas/components/confirmation-modal/confirmation-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-step2-libro-solicitud',
@@ -113,7 +116,9 @@ export class Step2LibroSolicitudComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private registroLibroService: RegistroLibroService,
     private maestroService: MaestrosService,
-    private oficinaService: OficinaService
+    private oficinaService: OficinaService,
+    private seguridadService: SeguridadService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -172,6 +177,20 @@ export class Step2LibroSolicitudComponent implements OnInit {
         );
       }
     );
+  }
+
+  abrirModalConfirmacion() {
+    const dialogRef = this.dialog.open(ConfirmationModalComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        // El usuario hizo clic en "Sí", continuar con la acción
+        // ... aquí puedes poner el código para la acción siguiente
+        this.btnNext(this.step);
+      } else {
+        // El usuario hizo clic en "No", cancelar la acción
+      }
+    });
   }
 
   listarLenguas(codigo: string): void {
@@ -256,7 +275,11 @@ export class Step2LibroSolicitudComponent implements OnInit {
 
     this.registroLibroIn.email = this.requestPaso1.email;
     this.registroLibroIn.celular = this.requestPaso1.celular;
-    this.registroLibroIn.codigoModoRegistro = 'E';
+    if (this.isExternal) {
+      this.registroLibroIn.codigoModoRegistro = 'E';
+    } else {
+      this.registroLibroIn.codigoModoRegistro = 'I';
+    }
     this.registroLibroIn.detalleSolicitud = arrayDetalle;
 
     this.registroLibroService.registroLibro(this.registroLibroIn).subscribe(
@@ -327,5 +350,9 @@ export class Step2LibroSolicitudComponent implements OnInit {
         this.tipoArchivoSustento = this.tipoArchivoOut.data;
       }
     );
+  }
+
+  get isExternal(): boolean {
+    return !this.seguridadService.getUserInternal();
   }
 }

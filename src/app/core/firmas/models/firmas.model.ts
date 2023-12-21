@@ -136,3 +136,19 @@ export class ConsultarRuipinOut extends Result {
     this.data = '';
   }
 }
+
+export interface OficinaUbigeo {
+  codigoOrec: string;
+  descripcionLocalLarga: string;
+  descripcionLocalCorta: string;
+  descripcionUbigeo: string;
+  descripcionUbigeoDetalle: string;
+  codigoDepartamento: string;
+  codigoProvincia: string;
+  codigoDistrito: string;
+  codigoCentroPoblado: string;
+  nombreDepartamento: string;
+  nombreProvincia: string;
+  nombreDistrito: string;
+  descripcionCentroPoblado: string;
+}
